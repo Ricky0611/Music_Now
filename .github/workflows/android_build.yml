@@ -6,9 +6,9 @@ name: Android Build
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -25,12 +25,13 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v2
         with:
-          java-version: 1.8
+          java-version: '8'
+          distribution: 'adopt'
 
-      # Run a set of tests
-      - name: Run Tests
-        run: ./gradlew test
+      # Grant execute permission for gradlew
+      - name: Grant Permission
+        run: chmod +x gradlew
 
-      # Assemble Project
+      # Assemble and Test Project
       - name: Build Project
-        run: ./gradlew assemble
+        run: ./gradlew build
