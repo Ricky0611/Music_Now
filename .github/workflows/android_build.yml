@@ -32,9 +32,9 @@ jobs:
       - name: Grant Permission
         run: chmod +x gradlew
 
-      # Run Tests
-      - name: Run Tests
-        run: ./gradlew test
+      # Run UI Tests
+      - name: Run UI Tests
+        uses: vgaidarji/android-github-actions-emulator@v1.0.1
 
       # Assemble and Test Project
       - name: Build Project
