@@ -12,7 +12,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  
+
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -40,6 +40,9 @@ jobs:
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
+      # Grant execute permission for gradlew
+      - name: Grant Permission
+        run: chmod +x gradlew
       # Run UI Tests
       - name: Run UI Tests
         uses: reactivecircus/android-emulator-runner@v2
