@@ -12,7 +12,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -32,10 +32,24 @@ jobs:
       - name: Grant Permission
         run: chmod +x gradlew
 
-      # Run Tests
-      - name: Run Tests
-        run: ./gradlew test
-
       # Assemble and Test Project
       - name: Build Project
         run: ./gradlew build
+
+  androidTest:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Grant execute permission for gradlew
+      - name: Grant Permission
+        run: chmod +x gradlew
+      # Run UI Tests
+      - name: Run UI Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 25
+          target: default
+          arch: x86
+          profile: Galaxy Nexus
+          disable-animations: true
+          script: ./gradlew connectedCheck --stacktrace
