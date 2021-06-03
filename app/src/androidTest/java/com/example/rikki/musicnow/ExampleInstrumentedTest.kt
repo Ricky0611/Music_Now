@@ -1,4 +1,4 @@
-package com.example.rikki.music_now
+package com.example.rikki.musicnow
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

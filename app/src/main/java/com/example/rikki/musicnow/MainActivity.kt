@@ -1,4 +1,4 @@
-package com.example.rikki.music_now
+package com.example.rikki.musicnow
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
