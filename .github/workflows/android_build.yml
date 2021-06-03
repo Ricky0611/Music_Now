@@ -55,26 +55,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # Install Node.js
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
-      # Install Newman
-      - name: Install Newman
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
-      # Make directory to upload the test results
-      - name: Make Directory for Results
-        run: mkdir -p testResults
       # Run the POSTMAN Collection
       - name: Run POSTMAN Collection
-        run: |
-          newman run ./postman/MusicNow-collection.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
-      # Upload the contents of Test Results directory to workspace
-      - name: Output the Run Details
-        uses: actions/upload-artifact@v2
+        id: run-newman
+        uses: anthonyvscode/newman-action@v1
         with:
-          name: RunReports
-          path: testResults
+          collection: ./postman/MusicNow-collection.json
+          reporters: cli
+      # Printout the Summary in Console
+      - name: Output Details
+        run: echo ${{ steps.run-newman.outputs.summary }}
