@@ -1,0 +1,374 @@
+{
+	"info": {
+		"_postman_id": "b9b43217-4cc7-fa92-5eec-1244900c44da",
+		"name": "MusicNow",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login (55565454, 7011)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://rjtmobile.com/ansari//rjt_music/music_app/login.php?user_mobile=6822180603&user_pass=Ricky0611",
+					"protocol": "http",
+					"host": [
+						"rjtmobile",
+						"com"
+					],
+					"path": [
+						"ansari",
+						"",
+						"rjt_music",
+						"music_app",
+						"login.php"
+					],
+					"query": [
+						{
+							"key": "user_mobile",
+							"value": "6822180603"
+						},
+						{
+							"key": "user_pass",
+							"value": "Ricky0611"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registration (aamir, aa@gmail.com, 55565454, 7011)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://rjtmobile.com/ansari/rjt_music/music_app/registration.php?&user_name=ricky&user_email=ricky@gmail.com&user_mobile=62283386&user_pass=Ricky0611",
+					"protocol": "http",
+					"host": [
+						"rjtmobile",
+						"com"
+					],
+					"path": [
+						"ansari",
+						"rjt_music",
+						"music_app",
+						"registration.php"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": ""
+						},
+						{
+							"key": "user_name",
+							"value": "ricky"
+						},
+						{
+							"key": "user_email",
+							"value": "ricky@gmail.com"
+						},
+						{
+							"key": "user_mobile",
+							"value": "62283386"
+						},
+						{
+							"key": "user_pass",
+							"value": "Ricky0611"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset (55565454, 7011, 7012)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://rjtmobile.com/ansari/rjt_music/music_app/reset_pass.php?&user_mobile=55565454&user_pass=7011&newpassword=7012",
+					"protocol": "http",
+					"host": [
+						"rjtmobile",
+						"com"
+					],
+					"path": [
+						"ansari",
+						"rjt_music",
+						"music_app",
+						"reset_pass.php"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": ""
+						},
+						{
+							"key": "user_mobile",
+							"value": "55565454"
+						},
+						{
+							"key": "user_pass",
+							"value": "7011"
+						},
+						{
+							"key": "newpassword",
+							"value": "7012"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Music_album (album_type=new)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://rjtmobile.com/ansari/rjt_music/music_app/music_album_category.php?&album_type=new",
+					"protocol": "http",
+					"host": [
+						"rjtmobile",
+						"com"
+					],
+					"path": [
+						"ansari",
+						"rjt_music",
+						"music_app",
+						"music_album_category.php"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": ""
+						},
+						{
+							"key": "album_type",
+							"value": "new"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Music_album (album_type=top-played)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://rjtmobile.com/ansari/rjt_music/music_app/music_album_category.php?&album_type=top-played",
+					"protocol": "http",
+					"host": [
+						"rjtmobile",
+						"com"
+					],
+					"path": [
+						"ansari",
+						"rjt_music",
+						"music_app",
+						"music_album_category.php"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": ""
+						},
+						{
+							"key": "album_type",
+							"value": "top-played"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Music_album (album_type=top-comp)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://rjtmobile.com/ansari/rjt_music/music_app/music_album_category.php?&album_type=top-comp",
+					"protocol": "http",
+					"host": [
+						"rjtmobile",
+						"com"
+					],
+					"path": [
+						"ansari",
+						"rjt_music",
+						"music_app",
+						"music_album_category.php"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": ""
+						},
+						{
+							"key": "album_type",
+							"value": "top-comp"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Music Item (id=310)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://rjtmobile.com/ansari/rjt_music/music_app/music_play.php?&id=310",
+					"protocol": "http",
+					"host": [
+						"rjtmobile",
+						"com"
+					],
+					"path": [
+						"ansari",
+						"rjt_music",
+						"music_app",
+						"music_play.php"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": ""
+						},
+						{
+							"key": "id",
+							"value": "310"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Video Screen",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://rjtmobile.com/ansari/rjt_music/music_app/video_list.php?",
+					"protocol": "http",
+					"host": [
+						"rjtmobile",
+						"com"
+					],
+					"path": [
+						"ansari",
+						"rjt_music",
+						"music_app",
+						"video_list.php"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Video Item (id=407)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://rjtmobile.com/ansari/rjt_music/music_app/video_file.php?&id=407",
+					"protocol": "http",
+					"host": [
+						"rjtmobile",
+						"com"
+					],
+					"path": [
+						"ansari",
+						"rjt_music",
+						"music_app",
+						"video_file.php"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": ""
+						},
+						{
+							"key": "id",
+							"value": "407"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Picture List",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://rjtmobile.com/ansari/rjt_music/music_app/pics_list.php?",
+					"protocol": "http",
+					"host": [
+						"rjtmobile",
+						"com"
+					],
+					"path": [
+						"ansari",
+						"rjt_music",
+						"music_app",
+						"pics_list.php"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Picture Item (id=502)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://rjtmobile.com/ansari/rjt_music/music_app/pic_detail.php?&id=502",
+					"protocol": "http",
+					"host": [
+						"rjtmobile",
+						"com"
+					],
+					"path": [
+						"ansari",
+						"rjt_music",
+						"music_app",
+						"pic_detail.php"
+					],
+					"query": [
+						{
+							"key": null,
+							"value": ""
+						},
+						{
+							"key": "id",
+							"value": "502"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
