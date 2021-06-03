@@ -71,7 +71,7 @@ jobs:
       # Run the POSTMAN Collection
       - name: Run POSTMAN Collection
         run: |
-          newman run https://documenter.getpostman.com/view/1406205/TzY3BvZo -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
+          newman run https://www.getpostman.com/collections/73a7cf7230f908310882 -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
       # Upload the contents of Test Results directory to workspace
       - name: Output the Run Details
         uses: actions/upload-artifact@v2
