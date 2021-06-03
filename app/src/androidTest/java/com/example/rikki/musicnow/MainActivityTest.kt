@@ -1,4 +1,4 @@
-package com.example.rikki.music_now
+package com.example.rikki.musicnow
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
