@@ -17,7 +17,7 @@ class MainActivityTest {
 
     @Test
     fun checkTextViewContent() {
-        onView(withId(R.id.helloTextView)).check(matches(withText("Hello World!")))
+        onView(withId(R.id.helloTextView)).check(matches(withText("Hello world!")))
     }
 
 }
