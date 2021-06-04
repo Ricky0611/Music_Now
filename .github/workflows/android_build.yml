@@ -57,23 +57,21 @@ jobs:
       - uses: actions/checkout@v2
       # Install Node.js
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: '12.x'
+          node-version: '14'
       # Install Newman
       - name: Install Newman
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
-          npm config rm proxy
-          npm config rm https-proxy
       # Make directory to upload the test results
       - name: Make Directory for Results
         run: mkdir -p testResults
       # Run the POSTMAN Collection
       - name: Run POSTMAN Collection
         run: |
-          newman run ./postman/MusicNow-collection.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html --insecure
+          newman run ./postman/MusicNow-collection.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
       # Upload the contents of Test Results directory to workspace
       - name: Output the Run Details
         uses: actions/upload-artifact@v2
