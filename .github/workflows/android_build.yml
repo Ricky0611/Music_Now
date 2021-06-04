@@ -52,7 +52,7 @@ jobs:
           script: ./gradlew connectedCheck --stacktrace
 
   apiTest:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
       # Install Node.js
