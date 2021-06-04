@@ -52,21 +52,19 @@ jobs:
           script: ./gradlew connectedCheck --stacktrace
 
   apiTest:
-    runs-on: ubuntu-latest
+    runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
       # Install Node.js
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
-          node-version: '12.x'
+          node-version: '14'
       # Install Newman
       - name: Install Newman
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
-          npm config rm proxy
-          npm config rm https-proxy
       # Make directory to upload the test results
       - name: Make Directory for Results
         run: mkdir -p testResults
