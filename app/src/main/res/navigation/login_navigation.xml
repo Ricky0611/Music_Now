@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_navigation"
+    app:startDestination="@+id/nav_login">
+
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.example.rikki.musicnow.ui.login.LoginFragment"
+        android:label="@string/button_signIn"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_login_to_register"
+            app:destination="@id/nav_register"/>
+        <action
+            android:id="@+id/action_login_to_reset"
+            app:destination="@id/nav_reset"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_register"
+        android:name="com.example.rikki.musicnow.ui.login.RegisterFragment"
+        android:label="@string/button_register"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_register_to_login"
+            app:destination="@id/nav_login"
+            app:popUpTo="@id/nav_login"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_reset"
+        android:name="com.example.rikki.musicnow.ui.login.ResetFragment"
+        android:label="@string/button_reset"
+        tools:layout="@layout/fragment_reset">
+        <action
+            android:id="@+id/action_reset_to_login"
+            app:destination="@id/nav_login"
+            app:popUpTo="@id/nav_login"
+            app:popUpToInclusive="true"/>
+    </fragment>
+</navigation>

@@ -13,4 +13,38 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="FullscreenTheme" parent="Theme.Music_Now">
+        <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="buttonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="buttonBarButtonStyle">?android:attr/buttonBarButtonStyle</item>
+    </style>
+
+    <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="Theme.Music_Now.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Music_Now.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Music_Now.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="TitleTextViewStyle">
+        <item name="android:textSize">40dp</item>
+        <item name="android:textStyle">normal|bold</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="SubtitleTextViewStyle">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textStyle">normal|bold</item>
+        <item name="textAllCaps">false</item>
+    </style>
 </resources>
