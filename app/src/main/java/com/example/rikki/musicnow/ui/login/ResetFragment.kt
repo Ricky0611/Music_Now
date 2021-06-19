@@ -51,7 +51,7 @@ class ResetFragment : Fragment() {
                     if (mobile != SPController.getInstance(requireActivity()).getUserMobile()) {
                         SPController.getInstance(requireActivity()).apply {
                             deleteUser()
-                            saveUser("", mobile, "", password)
+                            saveUser("Ricky", mobile, "ricky@gmail.com", password)
                         }
                     } else {
                         SPController.getInstance(requireActivity()).apply {

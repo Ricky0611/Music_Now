@@ -17,7 +17,7 @@
             android:icon="@drawable/nav_video"
             android:title="@string/drawer_video" />
         <item
-            android:id="@+id/nav_pic"
+            android:id="@+id/nav_picture"
             android:icon="@drawable/nav_pic"
             android:title="@string/drawer_pic" />
 

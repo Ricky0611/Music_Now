@@ -33,8 +33,8 @@ class PictureFragment : Fragment() {
         val tabLayout = view.findViewById<TabLayout>(R.id.picTabLayout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when(position) {
-                1 -> "Favorites" // todo: replace with string resources
-                else -> "Picture"
+                1 -> getString(R.string.favorites)
+                else -> getString(R.string.drawer_pic)
             }
         }.attach()
     }

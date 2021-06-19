@@ -10,5 +10,28 @@
         android:id="@+id/nav_home"
         android:name="com.example.rikki.musicnow.ui.home.HomeFragment"
         android:label="@string/drawer_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_home_to_pic"
+            app:destination="@id/nav_picture"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_picture"
+        android:name="com.example.rikki.musicnow.ui.home.PictureFragment"
+        android:label="@string/drawer_pic"
+        tools:layout="@layout/fragment_picture">
+    </fragment>
+
+    <include app:graph="@navigation/login_navigation"/>
+
+    <fragment
+        android:id="@+id/nav_reset"
+        android:name="com.example.rikki.musicnow.ui.login.ResetFragment"
+        android:label="@string/button_reset"
+        tools:layout="@layout/fragment_reset">
+        <action
+            android:id="@+id/action_reset_to_login"
+            app:destination="@id/login_navigation"/>
+    </fragment>
 </navigation>

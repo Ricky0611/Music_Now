@@ -60,7 +60,7 @@ class LoginFragment : Fragment() {
                         val password = binding?.password?.text.toString()
                         SPController.getInstance(requireActivity()).apply {
                             deleteUser()
-                            saveUser("", mobile, "", password)
+                            saveUser("Ricky", mobile, "ricky@gmail.com", password)
                         }
                     }
                     val intent = Intent(requireActivity(), HomeActivity::class.java)

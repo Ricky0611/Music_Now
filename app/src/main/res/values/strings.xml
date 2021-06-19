@@ -3,6 +3,11 @@
     <!--Splash Screen-->
     <string name="start_now">Start Now</string>
     <!--Home Screen-->
+    <string name="image_unavailable">Image not available.</string>
+    <string name="signin_desc">Please Sign-In to enjoy all features!</string>
+    <string name="logout_hint">Are you sure you want to logout?</string>
+    <string name="button_logout">Logout</string>
+    <string name="favorites">Favorites</string>
     <!--Navigation Drawer-->
     <string name="nav_header_desc">User Image</string>
     <string name="drawer_home">Home</string>
@@ -57,11 +62,9 @@
     <string name="no_internet">Please connect to Internet first!</string>
     <string name="password_hint">Password must be 6 to 10 characters with at least one digit, one upper case letter, and one lower case letter.</string>
     <string name="email_hint">Please enter a valid email address within 30 characters.</string>
-    <string name="not_signin_yet">Please Sign-In First</string>
     <string name="signin_feature">Please Sign-in to try this feature!</string>
     <string name="permission_required_title">Please Grant Permission</string>
     <string name="permission_required_msg">Permission %s is a must for running this application. Please grant it to continue.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="hello_world">Hello world!</string>
 </resources>
