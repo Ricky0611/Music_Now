@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/nav_home"
+            android:title="@string/drawer_home" />
+        <item
+            android:id="@+id/nav_music"
+            android:icon="@drawable/nav_music"
+            android:title="@string/drawer_music" />
+        <item
+            android:id="@+id/nav_video"
+            android:icon="@drawable/nav_video"
+            android:title="@string/drawer_video" />
+        <item
+            android:id="@+id/nav_pic"
+            android:icon="@drawable/nav_pic"
+            android:title="@string/drawer_pic" />
+
+        <item
+            android:id="@+id/nav_member"
+            android:title="@string/drawer_member">
+            <menu>
+                <item
+                    android:id="@+id/nav_offline"
+                    android:icon="@drawable/nav_offline"
+                    android:title="@string/drawer_offline"/>
+                <item
+                    android:id="@+id/nav_my_zone"
+                    android:icon="@drawable/nav_my_zone"
+                    android:title="@string/drawer_myZone"/>
+                <item
+                    android:id="@+id/nav_reset"
+                    android:icon="@drawable/ic_account"
+                    android:title="@string/drawer_reset"/>
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@drawable/nav_logout"
+                    android:title="@string/drawer_logout"/>
+            </menu>
+        </item>
+
+    </group>
+</menu>
