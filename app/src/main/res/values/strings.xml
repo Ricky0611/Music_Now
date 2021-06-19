@@ -1,4 +1,70 @@
 <resources>
     <string name="app_name">MusicNow</string>
-    <string name="hello_world">Hello world!</string>
+    <!--Splash Screen-->
+    <string name="start_now">Start Now</string>
+    <!--Home Screen-->
+    <string name="image_unavailable">Image not available.</string>
+    <string name="signin_desc">Please Sign-In to enjoy all features!</string>
+    <string name="logout_hint">Are you sure you want to logout?</string>
+    <string name="button_logout">Logout</string>
+    <string name="favorites">Favorites</string>
+    <!--Navigation Drawer-->
+    <string name="nav_header_desc">User Image</string>
+    <string name="drawer_home">Home</string>
+    <string name="drawer_music">Music</string>
+    <string name="drawer_video">Video</string>
+    <string name="drawer_pic">Picture</string>
+    <string name="drawer_member">Member</string>
+    <string name="drawer_offline">Offline</string>
+    <string name="drawer_myZone">My Zone</string>
+    <string name="drawer_reset">Reset Password</string>
+    <string name="drawer_logout">Log Out</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <!--Login Screen-->
+    <string name="title_signin">Welcome,</string>
+    <string name="subtitle_signin">Sign in to continue!</string>
+    <string name="hint_phone">Phone Number</string>
+    <string name="hint_password">Password</string>
+    <string name="button_signIn">Sign In</string>
+    <string name="checking">Checking…</string>
+    <string name="signIn_error_msg">Invalid mobile / password!</string>
+    <string name="hint_phone_err">Please enter a phone number!</string>
+    <string name="hint_password_err">Please enter a password!</string>
+    <!--Register Screen-->
+    <string name="title_signup">Create Account,</string>
+    <string name="subtitle_signup">Sign up to get started!</string>
+    <string name="hint_name">User Name</string>
+    <string name="hint_email">Email Address</string>
+    <string name="button_register">Register</string>
+    <string name="hint_name_err">Please enter a user name!</string>
+    <string name="hint_email_err">Please enter an email address!</string>
+    <string name="reg_error_msg">The mobile number already exists!</string>
+    <!--Reset Screen-->
+    <string name="title_reset">Want to Reset Password?</string>
+    <string name="button_reset">Reset Password</string>
+    <string name="old_password">Provisional Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm New Password</string>
+    <string name="button_submit">Submit</string>
+    <string name="hint_confirm_password">Inconsistent with new password!</string>
+    <string name="hint_old_password_err">Please enter the provisional password!</string>
+    <string name="hint_new_password_err">Please enter the new password!</string>
+    <string name="hint_confirm_password_err">Please enter the confirm new password!</string>
+    <string name="password_error_msg">Old password mismatch!</string>
+    <string name="mobile_error_msg">Wrong mobile number!</string>
+    <!--Issue Information-->
+    <string name="dialog_progress_loading">Loading…</string>
+    <string name="button_ok">OK</string>
+    <string name="button_exit">Exit</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="attention">Attention</string>
+    <string name="no_internet">Please connect to Internet first!</string>
+    <string name="password_hint">Password must be 6 to 10 characters with at least one digit, one upper case letter, and one lower case letter.</string>
+    <string name="email_hint">Please enter a valid email address within 30 characters.</string>
+    <string name="signin_feature">Please Sign-in to try this feature!</string>
+    <string name="permission_required_title">Please Grant Permission</string>
+    <string name="permission_required_msg">Permission %s is a must for running this application. Please grant it to continue.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
