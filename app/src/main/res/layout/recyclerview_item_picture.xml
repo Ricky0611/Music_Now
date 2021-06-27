@@ -20,7 +20,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:adjustViewBounds="true"
             android:src="@drawable/image_unavailable"
-            android:contentDescription="@string/image_unavailable"/>
+            android:contentDescription="@string/unavailable_image"/>
 
         <TextView
             android:id="@+id/picTitle"

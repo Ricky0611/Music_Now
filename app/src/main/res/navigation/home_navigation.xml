@@ -21,7 +21,16 @@
         android:name="com.example.rikki.musicnow.ui.home.PictureFragment"
         android:label="@string/drawer_pic"
         tools:layout="@layout/fragment_picture">
+        <action
+            android:id="@+id/action_picture_to_detail"
+            app:destination="@id/nav_picture_detail"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_picture_detail"
+        android:name="com.example.rikki.musicnow.ui.home.PictureDetailFragment"
+        android:label="@string/drawer_pic"
+        tools:layout="@layout/fragment_picture_detail"/>
 
     <include app:graph="@navigation/login_navigation"/>
 

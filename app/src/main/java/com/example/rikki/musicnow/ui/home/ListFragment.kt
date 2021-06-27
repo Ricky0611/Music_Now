@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rikki.musicnow.R
 import com.example.rikki.musicnow.databinding.FragmentListBinding
@@ -32,10 +34,13 @@ class ListFragment : Fragment() {
     private fun showPictures() {
         model.getPictures().observe(viewLifecycleOwner, { list ->
             if (list.isEmpty()) {
-                list.add(MyPicture("", "", getString(R.string.image_unavailable), ""))
+                list.add(MyPicture("", "", getString(R.string.unavailable_image), ""))
             }
             val pictureAdapter = PictureAdapter(list) { id ->
-                //
+                findNavController().navigate(
+                    R.id.action_picture_to_detail,
+                    bundleOf(PictureDetailFragment.ID to id)
+                )
             }
             binding?.mainRecyclerView?.apply {
                 layoutManager = LinearLayoutManager(requireActivity())

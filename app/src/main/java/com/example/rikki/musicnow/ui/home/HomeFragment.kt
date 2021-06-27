@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
             model.fetchPictures()
             model.getPictures().observe(viewLifecycleOwner, { list ->
                 if (list.isEmpty()) {
-                    list.add(MyPicture("", "", getString(R.string.image_unavailable), ""))
+                    list.add(MyPicture("", "", getString(R.string.unavailable_image), ""))
                 }
                 imageAdapter = ImageAdapter(list)
                 binding?.recyclerView?.apply {

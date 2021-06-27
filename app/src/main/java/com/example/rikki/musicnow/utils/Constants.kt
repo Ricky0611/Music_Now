@@ -10,6 +10,7 @@ object Constants {
     const val fail = "failure"
     const val exist = "exsist"
     const val mismatch = "mismatch"
+    const val picture_header = "Photo Story"
     // password pattern
     val passwordPattern: Pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,10}\$")
     // urls
