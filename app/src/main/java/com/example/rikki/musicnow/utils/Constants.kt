@@ -3,6 +3,9 @@ package com.example.rikki.musicnow.utils
 import java.util.regex.Pattern
 
 object Constants {
+    // milliseconds
+    const val fade_in_duration = 4000L
+    const val start_duration = 3000L
     // request code
     const val INTERNET_REQUEST = 1
     // response status
