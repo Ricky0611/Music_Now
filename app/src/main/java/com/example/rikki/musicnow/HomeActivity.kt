@@ -71,7 +71,7 @@ class HomeActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_picture, R.id.nav_reset
+                R.id.nav_home, R.id.nav_music, R.id.nav_picture, R.id.nav_reset
             ), drawer
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -202,7 +202,7 @@ class HomeActivity : AppCompatActivity() {
                 getString(R.string.permission_required_msg),
                 permissions[0].substring(permissions[0].lastIndexOf(".") + 1)
         )
-        val dialog = android.app.AlertDialog.Builder(this).apply {
+        val dialog = AlertDialog.Builder(this).apply {
             setIcon(R.drawable.ic_info)
             setTitle(R.string.permission_required_title)
             setMessage(msg)

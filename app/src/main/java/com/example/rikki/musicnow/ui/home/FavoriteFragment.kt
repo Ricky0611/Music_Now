@@ -13,7 +13,15 @@ import com.example.rikki.musicnow.utils.SPController
 
 class FavoriteFragment : Fragment() {
 
+    private var type: Int? = null
     private var binding: FragmentFavoriteBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            type = it.getInt(FAV_TYPE)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +50,19 @@ class FavoriteFragment : Fragment() {
     override fun onDestroyView() {
         binding = null
         super.onDestroyView()
+    }
+
+    companion object {
+
+        private const val FAV_TYPE = "type"
+
+        @JvmStatic
+        fun newInstance(type: Int) =
+            FavoriteFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(FAV_TYPE, type)
+                }
+            }
     }
 
 }

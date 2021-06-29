@@ -13,6 +13,6 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:src="@drawable/image_unavailable"
-        android:contentDescription="@string/image_unavailable"/>
+        android:contentDescription="@string/unavailable_image"/>
 
 </androidx.cardview.widget.CardView>
