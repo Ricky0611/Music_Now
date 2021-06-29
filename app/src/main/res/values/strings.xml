@@ -68,6 +68,7 @@
     <string name="permission_required_title">Please Grant Permission</string>
     <string name="permission_required_msg">Permission %s is a must for running this application. Please grant it to continue.</string>
     <string name="unavailable_image">Image not available.</string>
+    <string name="unavailable_video_list">There is no video resource available!</string>
     <string name="unavailable_picture">The selected picture is not available!</string>
     <string name="unavailable_music">The selected music record is not available!</string>
     <string name="music_downloaded">This music has been downloaded!</string>

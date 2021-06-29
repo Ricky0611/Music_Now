@@ -8,6 +8,7 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.example.rikki.musicnow.model.MyMusic
 import com.example.rikki.musicnow.model.MyPicture
+import com.example.rikki.musicnow.model.MyVideo
 import com.example.rikki.musicnow.utils.AppController
 import com.example.rikki.musicnow.utils.Constants.music_header
 import com.example.rikki.musicnow.utils.Constants.picture_header
@@ -17,6 +18,8 @@ import com.example.rikki.musicnow.utils.Constants.urlMusicList_TopComp
 import com.example.rikki.musicnow.utils.Constants.urlMusicList_TopPlayed
 import com.example.rikki.musicnow.utils.Constants.urlPicture
 import com.example.rikki.musicnow.utils.Constants.urlPictureList
+import com.example.rikki.musicnow.utils.Constants.urlVideoList
+import com.example.rikki.musicnow.utils.Constants.videos_header
 
 class HomeViewModel : ViewModel() {
 
@@ -192,4 +195,33 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getMusic() : LiveData<MyMusic> = music
+
+    private val videoList = MutableLiveData<ArrayList<MyVideo>>()
+    private val video = MutableLiveData<MyVideo>()
+
+    fun fetchVideoList() {
+        val req = JsonObjectRequest(Request.Method.GET, urlVideoList, null, { response ->
+            Log.d("Video_List", response.toString())
+            val array = response.getJSONArray(videos_header)
+            val list = arrayListOf<MyVideo>()
+            for (i in 0 until array.length()) {
+                array.getJSONObject(i).let { record ->
+                    list.add(MyVideo(
+                        record.getString("Id"),
+                        record.getString("VideoName"),
+                        record.getString("VideoDesc"),
+                        record.getString("VideoThumb"),
+                        record.getString("VideoFile")
+                    ))
+                }
+            }
+            videoList.postValue(list)
+        }, { error ->
+            Log.d("Video_List", "Error: ${error.localizedMessage}")
+            videoList.postValue(arrayListOf())
+        })
+        AppController.addToRequestQueue(req)
+    }
+
+    fun getVideoList() : LiveData<ArrayList<MyVideo>> = videoList
 }

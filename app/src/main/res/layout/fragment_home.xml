@@ -9,7 +9,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="@dimen/image_height"
         android:padding="5dp"
         android:scrollbars="horizontal"
         app:layout_constraintTop_toTopOf="parent" />
