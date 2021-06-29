@@ -3,11 +3,13 @@
     <!--Splash Screen-->
     <string name="start_now">Start Now</string>
     <!--Home Screen-->
-    <string name="image_unavailable">Image not available.</string>
     <string name="signin_desc">Please Sign-In to enjoy all features!</string>
     <string name="logout_hint">Are you sure you want to logout?</string>
     <string name="button_logout">Logout</string>
     <string name="favorites">Favorites</string>
+    <string name="music_new">New Release</string>
+    <string name="music_top_played">Top Played</string>
+    <string name="music_top_comp">Top Compilation</string>
     <!--Navigation Drawer-->
     <string name="nav_header_desc">User Image</string>
     <string name="drawer_home">Home</string>
@@ -65,6 +67,9 @@
     <string name="signin_feature">Please Sign-in to try this feature!</string>
     <string name="permission_required_title">Please Grant Permission</string>
     <string name="permission_required_msg">Permission %s is a must for running this application. Please grant it to continue.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="unavailable_image">Image not available.</string>
+    <string name="unavailable_picture">The selected picture is not available!</string>
+    <string name="unavailable_music">The selected music record is not available!</string>
+    <string name="music_downloaded">This music has been downloaded!</string>
+    <string name="music_cannot_control">This function is not available for live streaming content.</string>
 </resources>

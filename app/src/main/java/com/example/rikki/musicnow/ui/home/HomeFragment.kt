@@ -40,6 +40,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun initNavigationButtons() {
+        // go to Music section
+        binding?.musicBtn?.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_music)
+        }
+
         // go to Picture section
         binding?.picBtn?.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_pic)
@@ -52,7 +57,7 @@ class HomeFragment : Fragment() {
             model.fetchPictures()
             model.getPictures().observe(viewLifecycleOwner, { list ->
                 if (list.isEmpty()) {
-                    list.add(MyPicture("", "", getString(R.string.image_unavailable), ""))
+                    list.add(MyPicture("", "", getString(R.string.unavailable_image), ""))
                 }
                 imageAdapter = ImageAdapter(list)
                 binding?.recyclerView?.apply {
