@@ -40,6 +40,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun initNavigationButtons() {
+        // go to Music section
+        binding?.musicBtn?.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_music)
+        }
+
         // go to Picture section
         binding?.picBtn?.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_pic)
