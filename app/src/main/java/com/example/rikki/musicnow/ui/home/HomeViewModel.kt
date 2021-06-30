@@ -18,7 +18,9 @@ import com.example.rikki.musicnow.utils.Constants.urlMusicList_TopComp
 import com.example.rikki.musicnow.utils.Constants.urlMusicList_TopPlayed
 import com.example.rikki.musicnow.utils.Constants.urlPicture
 import com.example.rikki.musicnow.utils.Constants.urlPictureList
+import com.example.rikki.musicnow.utils.Constants.urlVideo
 import com.example.rikki.musicnow.utils.Constants.urlVideoList
+import com.example.rikki.musicnow.utils.Constants.video_header
 import com.example.rikki.musicnow.utils.Constants.videos_header
 
 class HomeViewModel : ViewModel() {
@@ -207,7 +209,7 @@ class HomeViewModel : ViewModel() {
             for (i in 0 until array.length()) {
                 array.getJSONObject(i).let { record ->
                     list.add(MyVideo(
-                        record.getString("Id"),
+                        record.getString("VideoId"),
                         record.getString("VideoName"),
                         record.getString("VideoDesc"),
                         record.getString("VideoThumb"),
@@ -224,4 +226,40 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getVideoList() : LiveData<ArrayList<MyVideo>> = videoList
+
+    fun containsVideo(id: String) {
+        videoList.value?.let { list ->
+            for (i in list.indices) {
+                if (list[i].id == id) {
+                    video.postValue(list[i])
+                }
+            }
+            fetchVideo(id)
+        } ?: run {
+            fetchVideo(id)
+        }
+    }
+
+    private fun fetchVideo(id: String) {
+        val url = String.format(urlVideo, id)
+        val req = JsonObjectRequest(Request.Method.GET, url, null, { response ->
+            Log.d("Video $id", response.toString())
+            val array = response.getJSONArray(video_header)
+            array.getJSONObject(0).let { record ->
+                video.postValue(MyVideo(
+                        record.getString("Id"),
+                        record.getString("VideoName"),
+                        record.getString("VideoDesc"),
+                        record.getString("VideoThumb"),
+                        record.getString("VideoFile")
+                ))
+            }
+        }, { error ->
+            Log.d("Video $id", "Error: ${error.localizedMessage}")
+            video.postValue(MyVideo())
+        })
+        AppController.addToRequestQueue(req)
+    }
+
+    fun getVideo() : LiveData<MyVideo> = video
 }

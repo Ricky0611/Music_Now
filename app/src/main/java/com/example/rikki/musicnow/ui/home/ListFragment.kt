@@ -66,7 +66,10 @@ class ListFragment : Fragment() {
                 requireActivity().onBackPressed()
             } else {
                 val videoAdapter = VideoAdapter(list) {
-                    //
+                    findNavController().navigate(
+                        R.id.action_video_to_detail,
+                        bundleOf(VideoDetailFragment.ID to it)
+                    )
                 }
                 binding?.mainRecyclerView?.apply {
                     layoutManager = LinearLayoutManager(requireActivity())
