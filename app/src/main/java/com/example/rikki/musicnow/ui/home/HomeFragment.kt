@@ -45,6 +45,11 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_home_to_music)
         }
 
+        // go to Video section
+        binding?.videoBtn?.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_video)
+        }
+
         // go to Picture section
         binding?.picBtn?.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_pic)

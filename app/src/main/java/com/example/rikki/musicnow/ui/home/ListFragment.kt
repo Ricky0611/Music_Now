@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -14,8 +15,10 @@ import com.example.rikki.musicnow.databinding.FragmentListBinding
 import com.example.rikki.musicnow.model.MyPicture
 import com.example.rikki.musicnow.utils.Constants.MUSIC_CODE
 import com.example.rikki.musicnow.utils.Constants.PICTURE_CODE
+import com.example.rikki.musicnow.utils.Constants.VIDEO_CODE
 import com.example.rikki.musicnow.utils.MusicAdapter
 import com.example.rikki.musicnow.utils.PictureAdapter
+import com.example.rikki.musicnow.utils.VideoAdapter
 
 class ListFragment : Fragment() {
 
@@ -29,6 +32,7 @@ class ListFragment : Fragment() {
             type = it.getInt(LIST_TYPE)
             when (type) {
                 MUSIC_CODE -> model.fetchMusicLists()
+                VIDEO_CODE -> model.fetchVideoList()
                 PICTURE_CODE -> model.fetchPictures()
             }
         } ?: run {
@@ -44,10 +48,35 @@ class ListFragment : Fragment() {
 
         when (type) {
             MUSIC_CODE -> showMusicLists()
+            VIDEO_CODE -> showVideoList()
             PICTURE_CODE -> showPictures()
         }
 
         return binding?.root
+    }
+
+    private fun showVideoList() {
+        // change view
+        binding?.musicListView?.visibility = View.GONE
+        binding?.mainRecyclerView?.visibility = View.VISIBLE
+        // show data
+        model.getVideoList().observe(viewLifecycleOwner, { list ->
+            if (list.isEmpty()) {
+                Toast.makeText(requireActivity(), getString(R.string.unavailable_video_list), Toast.LENGTH_LONG).show()
+                requireActivity().onBackPressed()
+            } else {
+                val videoAdapter = VideoAdapter(list) {
+                    findNavController().navigate(
+                        R.id.action_video_to_detail,
+                        bundleOf(VideoDetailFragment.ID to it)
+                    )
+                }
+                binding?.mainRecyclerView?.apply {
+                    layoutManager = LinearLayoutManager(requireActivity())
+                    adapter = videoAdapter
+                }
+            }
+        })
     }
 
     private fun showMusicLists() {

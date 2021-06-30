@@ -20,6 +20,8 @@ object Constants {
     const val mismatch = "mismatch"
     const val picture_header = "Photo Story"
     const val music_header = "Albums"
+    const val videos_header = "Videos"
+    const val video_header = "Video"
     // password pattern
     val passwordPattern: Pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,10}\$")
     // urls
@@ -32,4 +34,6 @@ object Constants {
     const val urlMusicList_TopPlayed = "http://rjtmobile.com/ansari/rjt_music/music_app/music_album_category.php?&album_type=top-played"
     const val urlMusicList_TopComp = "http://rjtmobile.com/ansari/rjt_music/music_app/music_album_category.php?&album_type=top-comp"
     const val urlMusic = "http://rjtmobile.com/ansari/rjt_music/music_app/music_play.php?&id=%s"
+    const val urlVideoList = "http://rjtmobile.com/ansari/rjt_music/music_app/video_list.php?"
+    const val urlVideo = "http://rjtmobile.com/ansari/rjt_music/music_app/video_file.php?&id=%s"
 }
