@@ -39,7 +39,7 @@ class HomeViewModel : ViewModel() {
                             picture.getString("PicId"),
                             picture.getString("PicTitle"),
                             picture.getString("PicDesc"),
-                            picture.getString("PicUrl")
+                            picture.getString("PicUrl").replace(" ", "%20")
                     ))
                 }
             }
@@ -76,7 +76,7 @@ class HomeViewModel : ViewModel() {
                         photo.getString("PicId"),
                         photo.getString("PicTitle"),
                         photo.getString("PicDesc"),
-                        photo.getString("PicUrl")
+                        photo.getString("PicUrl").replace(" ", "%20")
                 ))
             }
         }, { error ->
@@ -110,8 +110,8 @@ class HomeViewModel : ViewModel() {
                         music.getString("AlbumId"),
                         music.getString("AlbumName"),
                         music.getString("AlbumDesc"),
-                        music.getString("AlbumThumb"),
-                        music.getString("MusicFile")
+                        music.getString("AlbumThumb").replace(" ", "%20"),
+                        music.getString("MusicFile").replace(" ", "%20")
                     ))
                 }
             }
@@ -134,8 +134,8 @@ class HomeViewModel : ViewModel() {
                         music.getString("AlbumId"),
                         music.getString("AlbumName"),
                         music.getString("AlbumDesc"),
-                        music.getString("AlbumThumb"),
-                        music.getString("MusicFile")
+                        music.getString("AlbumThumb").replace(" ", "%20"),
+                        music.getString("MusicFile").replace(" ", "%20")
                     ))
                 }
             }
@@ -158,8 +158,8 @@ class HomeViewModel : ViewModel() {
                         music.getString("AlbumId"),
                         music.getString("AlbumName"),
                         music.getString("AlbumDesc"),
-                        music.getString("AlbumThumb"),
-                        music.getString("MusicFile")
+                        music.getString("AlbumThumb").replace(" ", "%20"),
+                        music.getString("MusicFile").replace(" ", "%20")
                     ))
                 }
             }
@@ -185,8 +185,8 @@ class HomeViewModel : ViewModel() {
                     record.getString("AlbumId"),
                     record.getString("AlbumName"),
                     record.getString("AlbumDesc"),
-                    record.getString("AlbumThumb"),
-                    record.getString("MusicFile")
+                    record.getString("AlbumThumb").replace(" ", "%20"),
+                    record.getString("MusicFile").replace(" ", "%20")
                 ))
             }
         }, { error ->
@@ -212,8 +212,8 @@ class HomeViewModel : ViewModel() {
                         record.getString("VideoId"),
                         record.getString("VideoName"),
                         record.getString("VideoDesc"),
-                        record.getString("VideoThumb"),
-                        record.getString("VideoFile")
+                        record.getString("VideoThumb").replace(" ", "%20"),
+                        record.getString("VideoFile").replace(" ", "%20")
                     ))
                 }
             }
@@ -250,8 +250,8 @@ class HomeViewModel : ViewModel() {
                         record.getString("Id"),
                         record.getString("VideoName"),
                         record.getString("VideoDesc"),
-                        record.getString("VideoThumb"),
-                        record.getString("VideoFile")
+                        record.getString("VideoThumb").replace(" ", "%20"),
+                        record.getString("VideoFile").replace(" ", "%20")
                 ))
             }
         }, { error ->
