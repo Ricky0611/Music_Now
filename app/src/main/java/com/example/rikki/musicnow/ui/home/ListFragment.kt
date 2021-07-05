@@ -62,7 +62,7 @@ class ListFragment : Fragment() {
         // show data
         model.getVideoList().observe(viewLifecycleOwner, { list ->
             if (list.isEmpty()) {
-                Toast.makeText(requireActivity(), getString(R.string.unavailable_video_list), Toast.LENGTH_LONG).show()
+                Toast.makeText(requireActivity(), R.string.unavailable_video_list, Toast.LENGTH_LONG).show()
                 requireActivity().onBackPressed()
             } else {
                 val videoAdapter = VideoAdapter(list) {

@@ -8,7 +8,10 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -24,8 +27,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.rikki.musicnow.databinding.ActivityHomeBinding
+import com.example.rikki.musicnow.model.MyMusic
+import com.example.rikki.musicnow.model.MyPicture
+import com.example.rikki.musicnow.model.MyVideo
+import com.example.rikki.musicnow.ui.home.HomeViewModel
 import com.example.rikki.musicnow.utils.Constants
 import com.example.rikki.musicnow.utils.SPController
+import java.io.File
 
 class HomeActivity : AppCompatActivity() {
 
@@ -42,6 +50,29 @@ class HomeActivity : AppCompatActivity() {
         isInternetAvailable(this)
 
         initUI()
+        initResourceLists()
+    }
+
+    private fun initResourceLists() {
+        musicList = arrayListOf()
+        videoList = arrayListOf()
+        picList = arrayListOf()
+        val model: HomeViewModel by viewModels()
+        model.getMusicNew().observe(this, {
+            musicList.addAll(it)
+        })
+        model.getMusicTopPlayed().observe(this, {
+            musicList.addAll(it)
+        })
+        model.getMusicTopComp().observe(this, {
+            musicList.addAll(it)
+        })
+        model.getVideoList().observe(this, {
+            videoList = it
+        })
+        model.getPictures().observe(this, {
+            picList = it
+        })
     }
 
     private fun initUI() {
@@ -235,8 +266,44 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    fun isExternalStorageWritable(): Boolean {
+        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+    }
+
+    fun isExternalStorageReadable(): Boolean {
+        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED_READ_ONLY
+    }
+
+    fun getAppSpecificPictureStorageDir(context: Context, picName: String): File {
+        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), picName)
+        if (!file.mkdirs()) {
+            Log.d("AppStorage_Picture", "Directory not created")
+        }
+        return file
+    }
+
+    fun getAppSpecificMusicStorageDir(context: Context, musicName: String): File {
+        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_MUSIC), musicName)
+        if (!file.mkdirs()) {
+            Log.d("AppStorage_Music", "Directory not created")
+        }
+        return file
+    }
+
+    fun getAppSpecificMovieStorageDir(context: Context, movieName: String): File {
+        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_MOVIES), movieName)
+        if (!file.mkdirs()) {
+            Log.d("AppStorage_Movie", "Directory not created")
+        }
+        return file
+    }
+
     companion object {
         private lateinit var instance: HomeActivity
+
+        lateinit var musicList: ArrayList<MyMusic>
+        lateinit var videoList: ArrayList<MyVideo>
+        lateinit var picList: ArrayList<MyPicture>
 
         fun isInternetAvailable(context: Context) : Boolean {
             val connectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -275,6 +342,18 @@ class HomeActivity : AppCompatActivity() {
 
         fun login() {
             instance.loginAlertDialog.show()
+        }
+
+        fun isDownloadAvailable() : Boolean {
+            return (instance.isExternalStorageReadable() && instance.isExternalStorageWritable())
+        }
+
+        fun formatFileName(name: String) : String {
+            return name.replace("\\s+", "_")
+        }
+
+        fun getDisplayName(name: String) : String {
+            return name.replace("_", " ")
         }
     }
 }

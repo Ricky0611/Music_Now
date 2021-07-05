@@ -6,10 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
+import com.example.rikki.musicnow.HomeActivity
 import com.example.rikki.musicnow.model.MyMusic
 import com.example.rikki.musicnow.model.MyPicture
 import com.example.rikki.musicnow.model.MyVideo
 import com.example.rikki.musicnow.utils.AppController
+import com.example.rikki.musicnow.utils.Constants.dot
 import com.example.rikki.musicnow.utils.Constants.music_header
 import com.example.rikki.musicnow.utils.Constants.picture_header
 import com.example.rikki.musicnow.utils.Constants.urlMusic
@@ -29,42 +31,33 @@ class HomeViewModel : ViewModel() {
     private val picture = MutableLiveData<MyPicture>()
 
     fun fetchPictures() {
-        val req = JsonObjectRequest(Request.Method.GET, urlPictureList, null, { response ->
-            Log.d("Pictures", response.toString())
-            val array = response.getJSONArray(picture_header)
-            val list = arrayListOf<MyPicture>()
-            for (i in 0 until array.length()) {
-                array.getJSONObject(i).let { picture ->
-                    list.add(MyPicture(
-                            picture.getString("PicId"),
-                            picture.getString("PicTitle"),
-                            picture.getString("PicDesc"),
-                            picture.getString("PicUrl").replace(" ", "%20")
-                    ))
+        if (HomeActivity.picList.isEmpty()) {
+            val req = JsonObjectRequest(Request.Method.GET, urlPictureList, null, { response ->
+                Log.d("Pictures", response.toString())
+                val array = response.getJSONArray(picture_header)
+                val list = arrayListOf<MyPicture>()
+                for (i in 0 until array.length()) {
+                    array.getJSONObject(i).let { picture ->
+                        list.add(
+                            MyPicture(
+                                picture.getString("PicId"),
+                                picture.getString("PicTitle"),
+                                picture.getString("PicDesc"),
+                                picture.getString("PicUrl").replace(" ", "%20")
+                            )
+                        )
+                    }
                 }
-            }
-            pictureList.postValue(list)
-        }, { error ->
-            Log.d("Pictures", "Error: ${error.localizedMessage}")
-            pictureList.postValue(arrayListOf())
-        })
-        AppController.addToRequestQueue(req)
+                pictureList.postValue(list)
+            }, { error ->
+                Log.d("Pictures", "Error: ${error.localizedMessage}")
+                pictureList.postValue(arrayListOf())
+            })
+            AppController.addToRequestQueue(req)
+        }
     }
 
     fun getPictures() : LiveData<ArrayList<MyPicture>> = pictureList
-
-    fun containsPicture(id: String) {
-        pictureList.value?.let { list ->
-            for (i in list.indices) {
-                if (list[i].id == id) {
-                    picture.postValue(list[i])
-                }
-            }
-            fetchPicture(id)
-        } ?: run {
-            fetchPicture(id)
-        }
-    }
 
     private fun fetchPicture(id: String) {
         val url = String.format(urlPicture, id)
@@ -94,9 +87,11 @@ class HomeViewModel : ViewModel() {
     private val music = MutableLiveData<MyMusic>()
 
     fun fetchMusicLists() {
-        fetchMusicNew()
-        fetchMusicTopPlayed()
-        fetchMusicTopComp()
+        if (HomeActivity.musicList.isEmpty()) {
+            fetchMusicNew()
+            fetchMusicTopPlayed()
+            fetchMusicTopComp()
+        }
     }
 
     private fun fetchMusicTopComp() {
@@ -213,7 +208,8 @@ class HomeViewModel : ViewModel() {
                         record.getString("VideoName"),
                         record.getString("VideoDesc"),
                         record.getString("VideoThumb").replace(" ", "%20"),
-                        record.getString("VideoFile").replace(" ", "%20")
+                        record.getString("VideoFile").replace(" ", "%20"),
+                        record.getString("VideoFile").substringAfterLast(dot, "")
                     ))
                 }
             }
@@ -227,19 +223,6 @@ class HomeViewModel : ViewModel() {
 
     fun getVideoList() : LiveData<ArrayList<MyVideo>> = videoList
 
-    fun containsVideo(id: String) {
-        videoList.value?.let { list ->
-            for (i in list.indices) {
-                if (list[i].id == id) {
-                    video.postValue(list[i])
-                }
-            }
-            fetchVideo(id)
-        } ?: run {
-            fetchVideo(id)
-        }
-    }
-
     private fun fetchVideo(id: String) {
         val url = String.format(urlVideo, id)
         val req = JsonObjectRequest(Request.Method.GET, url, null, { response ->
@@ -251,7 +234,8 @@ class HomeViewModel : ViewModel() {
                         record.getString("VideoName"),
                         record.getString("VideoDesc"),
                         record.getString("VideoThumb").replace(" ", "%20"),
-                        record.getString("VideoFile").replace(" ", "%20")
+                        record.getString("VideoFile").replace(" ", "%20"),
+                        record.getString("VideoFile").substringAfterLast(dot, "")
                 ))
             }
         }, { error ->

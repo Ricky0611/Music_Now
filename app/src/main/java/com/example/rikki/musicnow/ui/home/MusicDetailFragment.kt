@@ -3,13 +3,14 @@ package com.example.rikki.musicnow.ui.home
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import com.example.rikki.musicnow.HomeActivity
 import com.example.rikki.musicnow.R
 import com.example.rikki.musicnow.databinding.FragmentMusicDetailBinding
@@ -21,7 +22,6 @@ import com.squareup.picasso.Picasso
 class MusicDetailFragment : Fragment(), MediaPlayer.OnPreparedListener, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnCompletionListener {
 
     private var binding: FragmentMusicDetailBinding? = null
-    private val model: HomeViewModel by activityViewModels()
     private var id: String? = null
     private lateinit var musicRecord: MyMusic
     private lateinit var player: MediaPlayer
@@ -42,15 +42,15 @@ class MusicDetailFragment : Fragment(), MediaPlayer.OnPreparedListener, MediaPla
 
         // get music and display
         id?.let { it ->
-            model.fetchMusic(it)
-            model.getMusic().observe(viewLifecycleOwner, { music ->
-                if (music.id.isBlank()) {
-                    cannotPlay()
-                } else {
-                    musicRecord = music
-                    display()
+            HomeActivity.musicList.let { list ->
+                for (i in list.indices) {
+                    if (list[i].id == it) {
+                        musicRecord = list[i]
+                        break
+                    }
                 }
-            })
+                display()
+            }
         } ?: run {
             cannotPlay()
         }
@@ -59,23 +59,28 @@ class MusicDetailFragment : Fragment(), MediaPlayer.OnPreparedListener, MediaPla
     }
 
     private fun display() {
-        binding?.musicDetailTitle?.text = musicRecord.name
-        binding?.musicDetailDesc?.text = musicRecord.desc
-        Picasso.get().load(musicRecord.photoUrl).placeholder(R.drawable.image_unavailable).error(R.drawable.image_unavailable).into(
-                binding?.musicDetailImage
-        )
-        binding?.musicDetailImage?.contentDescription = musicRecord.name
-        player = MediaPlayer().apply {
-            setAudioAttributes(
+        if (::musicRecord.isInitialized) {
+            binding?.musicDetailTitle?.text = musicRecord.name
+            binding?.musicDetailDesc?.text = musicRecord.desc
+            Picasso.get().load(musicRecord.photoUrl).placeholder(R.drawable.image_unavailable)
+                .error(R.drawable.image_unavailable).into(
+                    binding?.musicDetailImage
+                )
+            binding?.musicDetailImage?.contentDescription = musicRecord.name
+            player = MediaPlayer().apply {
+                setAudioAttributes(
                     AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_MEDIA)
-                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build()
-            )
-            setOnPreparedListener(this@MusicDetailFragment)
-            setOnBufferingUpdateListener(this@MusicDetailFragment)
-            setOnCompletionListener(this@MusicDetailFragment)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC).build()
+                )
+                setOnPreparedListener(this@MusicDetailFragment)
+                setOnBufferingUpdateListener(this@MusicDetailFragment)
+                setOnCompletionListener(this@MusicDetailFragment)
+            }
+            initFunctionButtons()
+            checkDownload()
+        } else {
+            cannotPlay()
         }
-        initFunctionButtons()
-        checkDownload()
     }
 
     private fun checkDownload() {
@@ -126,14 +131,14 @@ class MusicDetailFragment : Fragment(), MediaPlayer.OnPreparedListener, MediaPla
                 isPaused = false
                 binding?.playBtn?.setImageResource(R.drawable.ic_pause)
             } else {
-                Toast.makeText(activity, getString(R.string.music_cannot_control), Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.music_cannot_control, Toast.LENGTH_SHORT).show()
             }
         }
         binding?.forwardBtn?.setOnClickListener {
             if (musicRecord.isDownloaded) {
                 //
             } else {
-                Toast.makeText(activity, getString(R.string.music_cannot_control), Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.music_cannot_control, Toast.LENGTH_SHORT).show()
             }
         }
         binding?.stopBtn?.setOnClickListener {
@@ -146,23 +151,27 @@ class MusicDetailFragment : Fragment(), MediaPlayer.OnPreparedListener, MediaPla
                 }
             }
         }
+        binding?.downloadBtn?.isVisible =
+            SPController.getInstance(requireActivity()).hasUserLoggedIn()
         binding?.downloadBtn?.setOnClickListener {
-            download()
+            downloadMusic()
         }
     }
 
-    private fun download() {
-        if (!SPController.getInstance(requireActivity()).hasUserLoggedIn()) {
-            HomeActivity.login()
-        } else if (musicRecord.isDownloaded) {
-            Toast.makeText(requireActivity(), getString(R.string.music_downloaded), Toast.LENGTH_SHORT).show()
+    private fun downloadMusic() {
+        if (musicRecord.isDownloaded) {
+            Toast.makeText(requireActivity(), R.string.music_downloaded, Toast.LENGTH_SHORT).show()
         } else {
-            // TODO: download
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_MUSIC)?.absolutePath?.let { root ->
+                // TODO download and save under root
+            } ?: run {
+                Toast.makeText(requireActivity(), R.string.unavailable_path, Toast.LENGTH_LONG).show()
+            }
         }
     }
 
     private fun cannotPlay() {
-        Toast.makeText(requireActivity(), getString(R.string.unavailable_music), Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity(), R.string.unavailable_music, Toast.LENGTH_LONG).show()
         requireActivity().onBackPressed()
     }
 

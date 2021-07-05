@@ -1,21 +1,24 @@
 package com.example.rikki.musicnow.ui.home
 
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.MediaController
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import com.example.rikki.musicnow.HomeActivity
 import com.example.rikki.musicnow.R
 import com.example.rikki.musicnow.databinding.FragmentVideoDetailBinding
 import com.example.rikki.musicnow.model.MyVideo
+import com.example.rikki.musicnow.utils.Constants.dot
+import com.example.rikki.musicnow.utils.SPController
 
 class VideoDetailFragment : Fragment() {
 
     private var binding: FragmentVideoDetailBinding? = null
-    private val model: HomeViewModel by activityViewModels()
     private var id: String? = null
     private lateinit var video : MyVideo
     private lateinit var controller: MediaController
@@ -35,15 +38,15 @@ class VideoDetailFragment : Fragment() {
 
         // get video
         id?.let {
-            model.containsVideo(it)
-            model.getVideo().observe(viewLifecycleOwner, { response ->
-                if (response.id.isBlank()) {
-                    cannotDisplay()
-                } else {
-                    video = response
-                    initUI()
+            HomeActivity.videoList.let { list ->
+                for (i in list.indices) {
+                    if (list[i].id == it) {
+                        video = list[i]
+                        break
+                    }
                 }
-            })
+                initUI()
+            }
         } ?: run {
             cannotDisplay()
         }
@@ -52,20 +55,43 @@ class VideoDetailFragment : Fragment() {
     }
 
     private fun initUI() {
-        binding?.videoName?.text = video.name
-        binding?.videoDesc?.text = video.desc
-        binding?.startBtn?.isEnabled = false
-        binding?.startBtn?.setOnClickListener {
-            binding?.startBtn?.visibility = View.GONE
-            binding?.videoView?.start()
+        if (::video.isInitialized) {
+            binding?.videoName?.text = video.name
+            binding?.videoDesc?.text = video.desc
+            binding?.startBtn?.isEnabled = false
+            binding?.startBtn?.setOnClickListener {
+                binding?.startBtn?.visibility = View.GONE
+                binding?.videoView?.start()
+            }
+            // setup download button
+            binding?.downloadBtn?.isVisible =
+                SPController.getInstance(requireActivity()).hasUserLoggedIn()
+            binding?.downloadBtn?.setOnClickListener {
+                downloadVideo()
+            }
+            // setup video
+            setupVideoPlayer()
+        } else {
+            cannotDisplay()
         }
-        // setup video
+    }
+
+    private fun setupVideoPlayer() {
         controller = MediaController(requireActivity())
         binding?.videoView?.apply {
-            setVideoPath(video.url)
+            val url = if (video.isDownloaded && HomeActivity.isDownloadAvailable()) {
+                val name = HomeActivity.formatFileName(video.name).plus(dot).plus(video.format)
+                (requireActivity() as HomeActivity).getAppSpecificMovieStorageDir(
+                    requireActivity(),
+                    name
+                ).absolutePath
+            } else {
+                video.url
+            }
+            setVideoPath(url)
             setMediaController(controller)
             setOnErrorListener { mp, what, extra ->
-                Toast.makeText(requireActivity(), getString(R.string.video_play_error), Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), R.string.video_play_error, Toast.LENGTH_SHORT).show()
                 false
             }
             setOnPreparedListener { player ->
@@ -80,8 +106,20 @@ class VideoDetailFragment : Fragment() {
         }
     }
 
+    private fun downloadVideo() {
+        if (video.isDownloaded) {
+            Toast.makeText(requireActivity(), R.string.video_downloaded, Toast.LENGTH_LONG).show()
+        } else {
+            requireActivity().getExternalFilesDir(Environment.DIRECTORY_MOVIES)?.absolutePath?.let { root ->
+                // TODO download and save under root
+            } ?: run {
+                Toast.makeText(requireActivity(), R.string.unavailable_path, Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
     private fun cannotDisplay() {
-        Toast.makeText(requireActivity(), getString(R.string.unavailable_video), Toast.LENGTH_LONG).show()
+        Toast.makeText(requireActivity(), R.string.unavailable_video, Toast.LENGTH_LONG).show()
         requireActivity().onBackPressed()
     }
 
