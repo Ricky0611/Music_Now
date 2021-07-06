@@ -68,11 +68,18 @@
     <string name="permission_required_title">Please Grant Permission</string>
     <string name="permission_required_msg">Permission %s is a must for running this application. Please grant it to continue.</string>
     <string name="unavailable_image">Image not available.</string>
-    <string name="unavailable_video_list">There is no video resource available!</string>
     <string name="unavailable_picture">The selected picture is not available!</string>
     <string name="unavailable_music">The selected music is not available!</string>
-    <string name="music_downloaded">This music has been downloaded!</string>
     <string name="music_cannot_control">This function is not available for live streaming content.</string>
+    <string name="unavailable_video_list">There is no video resource available!</string>
     <string name="unavailable_video">The selected video is not available!</string>
     <string name="video_play_error">An error occur while playing video!</string>
+    <!-- Download -->
+    <string name="picture_downloaded">This picture has been downloaded!</string>
+    <string name="music_downloaded">This music has been downloaded!</string>
+    <string name="video_downloaded">This video has been downloaded!</string>
+    <string name="unavailable_path">The download directory is not available!</string>
+    <string name="download_status_success">Download completed!</string>
+    <string name="download_status_failed">Download failed. %s</string>
+    <string name="unavailable_offline">There is no downloaded resource available!</string>
 </resources>
