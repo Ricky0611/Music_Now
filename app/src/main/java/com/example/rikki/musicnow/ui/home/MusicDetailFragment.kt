@@ -243,7 +243,7 @@ class MusicDetailFragment : Fragment(), MediaPlayer.OnPreparedListener, MediaPla
             progress = player.currentPosition
         }
         binding?.songCurrentDurationLabel?.text = millisecondToTime(player.currentPosition)
-        if (player.isPlaying) {
+        if (::player.isInitialized && player.isPlaying) {
             Handler(Looper.getMainLooper()).postDelayed(updater, start_duration)
         }
     }
@@ -293,6 +293,7 @@ class MusicDetailFragment : Fragment(), MediaPlayer.OnPreparedListener, MediaPla
 
     override fun onDestroyView() {
         binding = null
+        player.stop()
         player.release()
         if (musicRecord.isDownloaded) {
             Handler(Looper.getMainLooper()).removeCallbacks(updater)

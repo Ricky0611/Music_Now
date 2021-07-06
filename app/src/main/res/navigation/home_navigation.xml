@@ -20,6 +20,9 @@
         <action
             android:id="@+id/action_home_to_video"
             app:destination="@id/nav_video"/>
+        <action
+            android:id="@+id/action_home_to_offline"
+            app:destination="@id/nav_offline"/>
     </fragment>
 
     <fragment
@@ -75,6 +78,22 @@
         android:name="com.example.rikki.musicnow.ui.home.VideoDetailFragment"
         android:label="@string/drawer_video"
         tools:layout="@layout/fragment_video_detail"/>
+
+    <fragment
+        android:id="@+id/nav_offline"
+        android:name="com.example.rikki.musicnow.ui.home.OfflineFragment"
+        android:label="@string/drawer_offline"
+        tools:layout="@layout/fragment_offline">
+        <action
+            android:id="@+id/action_offline_to_music_detail"
+            app:destination="@id/nav_music_detail"/>
+        <action
+            android:id="@+id/action_offline_to_video_detail"
+            app:destination="@id/nav_video_detail"/>
+        <action
+            android:id="@+id/action_offline_to_picture_detail"
+            app:destination="@id/nav_picture_detail"/>
+    </fragment>
 
     <include app:graph="@navigation/login_navigation"/>
 

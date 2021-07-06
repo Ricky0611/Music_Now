@@ -81,4 +81,5 @@
     <string name="unavailable_path">The download directory is not available!</string>
     <string name="download_status_success">Download completed!</string>
     <string name="download_status_failed">Download failed. %s</string>
+    <string name="unavailable_offline">There is no downloaded resource available!</string>
 </resources>
