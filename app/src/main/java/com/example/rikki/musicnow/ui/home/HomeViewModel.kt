@@ -4,12 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
+import com.example.rikki.musicnow.HomeActivity
 import com.example.rikki.musicnow.model.MyMusic
 import com.example.rikki.musicnow.model.MyPicture
 import com.example.rikki.musicnow.model.MyVideo
 import com.example.rikki.musicnow.utils.AppController
+import com.example.rikki.musicnow.utils.Constants.MAX
+import com.example.rikki.musicnow.utils.Constants.dot
 import com.example.rikki.musicnow.utils.Constants.music_header
 import com.example.rikki.musicnow.utils.Constants.picture_header
 import com.example.rikki.musicnow.utils.Constants.urlMusic
@@ -22,6 +26,15 @@ import com.example.rikki.musicnow.utils.Constants.urlVideo
 import com.example.rikki.musicnow.utils.Constants.urlVideoList
 import com.example.rikki.musicnow.utils.Constants.video_header
 import com.example.rikki.musicnow.utils.Constants.videos_header
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStream
+import java.io.OutputStream
+import java.net.HttpURLConnection
+import java.net.URL
 
 class HomeViewModel : ViewModel() {
 
@@ -29,42 +42,34 @@ class HomeViewModel : ViewModel() {
     private val picture = MutableLiveData<MyPicture>()
 
     fun fetchPictures() {
-        val req = JsonObjectRequest(Request.Method.GET, urlPictureList, null, { response ->
-            Log.d("Pictures", response.toString())
-            val array = response.getJSONArray(picture_header)
-            val list = arrayListOf<MyPicture>()
-            for (i in 0 until array.length()) {
-                array.getJSONObject(i).let { picture ->
-                    list.add(MyPicture(
-                            picture.getString("PicId"),
-                            picture.getString("PicTitle"),
-                            picture.getString("PicDesc"),
-                            picture.getString("PicUrl")
-                    ))
+        if (HomeActivity.picList.isEmpty()) {
+            val req = JsonObjectRequest(Request.Method.GET, urlPictureList, null, { response ->
+                Log.d("Pictures", response.toString())
+                val array = response.getJSONArray(picture_header)
+                val list = arrayListOf<MyPicture>()
+                for (i in 0 until array.length()) {
+                    array.getJSONObject(i).let { picture ->
+                        list.add(
+                            MyPicture(
+                                picture.getString("PicId"),
+                                picture.getString("PicTitle"),
+                                picture.getString("PicDesc"),
+                                picture.getString("PicUrl").replace(" ", "%20"),
+                                picture.getString("PicUrl").substringAfterLast(dot, "")
+                            )
+                        )
+                    }
                 }
-            }
-            pictureList.postValue(list)
-        }, { error ->
-            Log.d("Pictures", "Error: ${error.localizedMessage}")
-            pictureList.postValue(arrayListOf())
-        })
-        AppController.addToRequestQueue(req)
+                pictureList.postValue(list)
+            }, { error ->
+                Log.d("Pictures", "Error: ${error.localizedMessage}")
+                pictureList.postValue(arrayListOf())
+            })
+            AppController.addToRequestQueue(req)
+        }
     }
 
     fun getPictures() : LiveData<ArrayList<MyPicture>> = pictureList
-
-    fun containsPicture(id: String) {
-        pictureList.value?.let { list ->
-            for (i in list.indices) {
-                if (list[i].id == id) {
-                    picture.postValue(list[i])
-                }
-            }
-            fetchPicture(id)
-        } ?: run {
-            fetchPicture(id)
-        }
-    }
 
     private fun fetchPicture(id: String) {
         val url = String.format(urlPicture, id)
@@ -76,7 +81,8 @@ class HomeViewModel : ViewModel() {
                         photo.getString("PicId"),
                         photo.getString("PicTitle"),
                         photo.getString("PicDesc"),
-                        photo.getString("PicUrl")
+                        photo.getString("PicUrl").replace(" ", "%20"),
+                        photo.getString("PicUrl").substringAfterLast(dot, "")
                 ))
             }
         }, { error ->
@@ -94,9 +100,11 @@ class HomeViewModel : ViewModel() {
     private val music = MutableLiveData<MyMusic>()
 
     fun fetchMusicLists() {
-        fetchMusicNew()
-        fetchMusicTopPlayed()
-        fetchMusicTopComp()
+        if (HomeActivity.musicList.isEmpty()) {
+            fetchMusicNew()
+            fetchMusicTopPlayed()
+            fetchMusicTopComp()
+        }
     }
 
     private fun fetchMusicTopComp() {
@@ -110,8 +118,9 @@ class HomeViewModel : ViewModel() {
                         music.getString("AlbumId"),
                         music.getString("AlbumName"),
                         music.getString("AlbumDesc"),
-                        music.getString("AlbumThumb"),
-                        music.getString("MusicFile")
+                        music.getString("AlbumThumb").replace(" ", "%20"),
+                        music.getString("MusicFile").replace(" ", "%20"),
+                        music.getString("MusicFile").substringAfterLast(dot, "")
                     ))
                 }
             }
@@ -134,8 +143,9 @@ class HomeViewModel : ViewModel() {
                         music.getString("AlbumId"),
                         music.getString("AlbumName"),
                         music.getString("AlbumDesc"),
-                        music.getString("AlbumThumb"),
-                        music.getString("MusicFile")
+                        music.getString("AlbumThumb").replace(" ", "%20"),
+                        music.getString("MusicFile").replace(" ", "%20"),
+                        music.getString("MusicFile").substringAfterLast(dot, "")
                     ))
                 }
             }
@@ -158,8 +168,9 @@ class HomeViewModel : ViewModel() {
                         music.getString("AlbumId"),
                         music.getString("AlbumName"),
                         music.getString("AlbumDesc"),
-                        music.getString("AlbumThumb"),
-                        music.getString("MusicFile")
+                        music.getString("AlbumThumb").replace(" ", "%20"),
+                        music.getString("MusicFile").replace(" ", "%20"),
+                        music.getString("MusicFile").substringAfterLast(dot, "")
                     ))
                 }
             }
@@ -185,8 +196,9 @@ class HomeViewModel : ViewModel() {
                     record.getString("AlbumId"),
                     record.getString("AlbumName"),
                     record.getString("AlbumDesc"),
-                    record.getString("AlbumThumb"),
-                    record.getString("MusicFile")
+                    record.getString("AlbumThumb").replace(" ", "%20"),
+                    record.getString("MusicFile").replace(" ", "%20"),
+                    record.getString("MusicFile").substringAfterLast(dot, "")
                 ))
             }
         }, { error ->
@@ -212,8 +224,9 @@ class HomeViewModel : ViewModel() {
                         record.getString("VideoId"),
                         record.getString("VideoName"),
                         record.getString("VideoDesc"),
-                        record.getString("VideoThumb"),
-                        record.getString("VideoFile")
+                        record.getString("VideoThumb").replace(" ", "%20"),
+                        record.getString("VideoFile").replace(" ", "%20"),
+                        record.getString("VideoFile").substringAfterLast(dot, "")
                     ))
                 }
             }
@@ -227,19 +240,6 @@ class HomeViewModel : ViewModel() {
 
     fun getVideoList() : LiveData<ArrayList<MyVideo>> = videoList
 
-    fun containsVideo(id: String) {
-        videoList.value?.let { list ->
-            for (i in list.indices) {
-                if (list[i].id == id) {
-                    video.postValue(list[i])
-                }
-            }
-            fetchVideo(id)
-        } ?: run {
-            fetchVideo(id)
-        }
-    }
-
     private fun fetchVideo(id: String) {
         val url = String.format(urlVideo, id)
         val req = JsonObjectRequest(Request.Method.GET, url, null, { response ->
@@ -250,8 +250,9 @@ class HomeViewModel : ViewModel() {
                         record.getString("Id"),
                         record.getString("VideoName"),
                         record.getString("VideoDesc"),
-                        record.getString("VideoThumb"),
-                        record.getString("VideoFile")
+                        record.getString("VideoThumb").replace(" ", "%20"),
+                        record.getString("VideoFile").replace(" ", "%20"),
+                        record.getString("VideoFile").substringAfterLast(dot, "")
                 ))
             }
         }, { error ->
@@ -262,4 +263,54 @@ class HomeViewModel : ViewModel() {
     }
 
     fun getVideo() : LiveData<MyVideo> = video
+
+    private val status = MutableLiveData<String>()
+    private val progress = MutableLiveData<Int>()
+
+    fun download(path: String, name: String, urlString: String) {
+        HomeActivity.startLoading()
+        viewModelScope.launch(Dispatchers.IO) {
+            val url = URL(urlString)
+            var input: InputStream? = null
+            var output: OutputStream? = null
+            var connection: HttpURLConnection? = null
+            try {
+                connection = url.openConnection() as HttpURLConnection
+                connection.connect()
+                if (connection.responseCode != HttpURLConnection.HTTP_OK) {
+                    status.postValue(connection.responseMessage)
+                    progress.postValue(-1)
+                    return@launch
+                }
+                input = connection.inputStream
+                val file = File(path, name)
+                output = FileOutputStream(file)
+                val data = ByteArray(4096)
+                var count: Int
+                while (input.read(data).also { count = it } != -1) {
+                    output.write(data, 0, count)
+                }
+                output.flush()
+                progress.postValue(MAX)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                progress.postValue(-1)
+                status.postValue(e.localizedMessage)
+            } finally {
+                try {
+                    input?.close()
+                    output?.close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+                connection?.disconnect()
+                withContext(Dispatchers.Main) {
+                    HomeActivity.endLoading()
+                }
+            }
+        }
+    }
+
+    fun getDownloadStatus() : LiveData<String> = status
+    fun getDownloadProgress() : LiveData<Int> = progress
 }

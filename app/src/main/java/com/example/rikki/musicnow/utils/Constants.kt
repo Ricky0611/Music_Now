@@ -4,11 +4,13 @@ import java.util.regex.Pattern
 
 object Constants {
     // milliseconds
-    const val fade_in_duration = 4000L
-    const val start_duration = 2000L
+    const val fade_in_duration = 3000L
+    const val start_duration = 1000L
     const val music_fast_duration = 5000
     // request code
     const val INTERNET_REQUEST = 1
+    // progress
+    const val MAX = 100
     // function code
     const val MUSIC_CODE = 1
     const val VIDEO_CODE = 2
@@ -22,6 +24,7 @@ object Constants {
     const val music_header = "Albums"
     const val videos_header = "Videos"
     const val video_header = "Video"
+    const val dot = "."
     // password pattern
     val passwordPattern: Pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,10}\$")
     // urls

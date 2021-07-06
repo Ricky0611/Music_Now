@@ -8,7 +8,9 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -24,8 +26,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.rikki.musicnow.databinding.ActivityHomeBinding
+import com.example.rikki.musicnow.model.MyMusic
+import com.example.rikki.musicnow.model.MyPicture
+import com.example.rikki.musicnow.model.MyVideo
+import com.example.rikki.musicnow.ui.home.HomeViewModel
 import com.example.rikki.musicnow.utils.Constants
 import com.example.rikki.musicnow.utils.SPController
+import java.io.File
 
 class HomeActivity : AppCompatActivity() {
 
@@ -42,6 +49,29 @@ class HomeActivity : AppCompatActivity() {
         isInternetAvailable(this)
 
         initUI()
+        initResourceLists()
+    }
+
+    private fun initResourceLists() {
+        musicList = arrayListOf()
+        videoList = arrayListOf()
+        picList = arrayListOf()
+        val model: HomeViewModel by viewModels()
+        model.getMusicNew().observe(this, {
+            musicList.addAll(it)
+        })
+        model.getMusicTopPlayed().observe(this, {
+            musicList.addAll(it)
+        })
+        model.getMusicTopComp().observe(this, {
+            musicList.addAll(it)
+        })
+        model.getVideoList().observe(this, {
+            videoList = it
+        })
+        model.getPictures().observe(this, {
+            picList = it
+        })
     }
 
     private fun initUI() {
@@ -71,7 +101,7 @@ class HomeActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_music, R.id.nav_video, R.id.nav_picture, R.id.nav_reset
+                R.id.nav_home, R.id.nav_music, R.id.nav_video, R.id.nav_picture, R.id.nav_offline, R.id.nav_reset
             ), drawer
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -235,8 +265,39 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    fun getAppSpecificPictureStorageDir(context: Context, picName: String): File {
+        val file = File(context.filesDir, picName)
+        if (!file.exists()) {
+            Log.d("AppStorage_Picture", "Directory not exists")
+            file.mkdirs()
+        }
+        return file
+    }
+
+    fun getAppSpecificMusicStorageDir(context: Context, musicName: String): File {
+        val file = File(context.filesDir, musicName)
+        if (!file.exists()) {
+            Log.d("AppStorage_Music", "Directory not exists")
+            file.mkdirs()
+        }
+        return file
+    }
+
+    fun getAppSpecificVideoStorageDir(context: Context, movieName: String): File {
+        val file = File(context.filesDir, movieName)
+        if (!file.exists()) {
+            Log.d("AppStorage_Video", "Directory not exists")
+            file.mkdirs()
+        }
+        return file
+    }
+
     companion object {
         private lateinit var instance: HomeActivity
+
+        lateinit var musicList: ArrayList<MyMusic>
+        lateinit var videoList: ArrayList<MyVideo>
+        lateinit var picList: ArrayList<MyPicture>
 
         fun isInternetAvailable(context: Context) : Boolean {
             val connectivityManager = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -275,6 +336,10 @@ class HomeActivity : AppCompatActivity() {
 
         fun login() {
             instance.loginAlertDialog.show()
+        }
+
+        fun formatFileName(name: String, format: String) : String {
+            return name.replace(" ", "_").plus(Constants.dot).plus(format)
         }
     }
 }

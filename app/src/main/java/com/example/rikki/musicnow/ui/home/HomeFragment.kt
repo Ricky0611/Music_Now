@@ -54,6 +54,11 @@ class HomeFragment : Fragment() {
         binding?.picBtn?.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_pic)
         }
+
+        // go to Offline section
+        binding?.downloadBtn?.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_offline)
+        }
     }
 
     private fun displayPictures() {
