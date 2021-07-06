@@ -6,6 +6,7 @@ data class MyMusic(
         val desc: String = "",
         val photoUrl: String = "",
         val url: String = "",
-        val isFavorited: Boolean = false,
-        val isDownloaded: Boolean = false
+        val format: String = "",
+        var isFavorited: Boolean = false,
+        var isDownloaded: Boolean = false
 )

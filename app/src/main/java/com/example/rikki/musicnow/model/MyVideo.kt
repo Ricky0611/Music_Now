@@ -7,6 +7,6 @@ data class MyVideo(
     val poster: String = "",
     val url: String = "",
     val format: String = "",
-    val isFavorited: Boolean = false,
-    val isDownloaded: Boolean = false
+    var isFavorited: Boolean = false,
+    var isDownloaded: Boolean = false
 )

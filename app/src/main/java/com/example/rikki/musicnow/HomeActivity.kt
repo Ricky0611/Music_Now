@@ -8,7 +8,6 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -266,34 +265,29 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun isExternalStorageWritable(): Boolean {
-        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
-    }
-
-    fun isExternalStorageReadable(): Boolean {
-        return Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED_READ_ONLY
-    }
-
     fun getAppSpecificPictureStorageDir(context: Context, picName: String): File {
-        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), picName)
-        if (!file.mkdirs()) {
-            Log.d("AppStorage_Picture", "Directory not created")
+        val file = File(context.filesDir, picName)
+        if (!file.exists()) {
+            Log.d("AppStorage_Picture", "Directory not exists")
+            file.mkdirs()
         }
         return file
     }
 
     fun getAppSpecificMusicStorageDir(context: Context, musicName: String): File {
-        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_MUSIC), musicName)
-        if (!file.mkdirs()) {
-            Log.d("AppStorage_Music", "Directory not created")
+        val file = File(context.filesDir, musicName)
+        if (!file.exists()) {
+            Log.d("AppStorage_Music", "Directory not exists")
+            file.mkdirs()
         }
         return file
     }
 
-    fun getAppSpecificMovieStorageDir(context: Context, movieName: String): File {
-        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_MOVIES), movieName)
-        if (!file.mkdirs()) {
-            Log.d("AppStorage_Movie", "Directory not created")
+    fun getAppSpecificVideoStorageDir(context: Context, movieName: String): File {
+        val file = File(context.filesDir, movieName)
+        if (!file.exists()) {
+            Log.d("AppStorage_Video", "Directory not exists")
+            file.mkdirs()
         }
         return file
     }
@@ -344,16 +338,8 @@ class HomeActivity : AppCompatActivity() {
             instance.loginAlertDialog.show()
         }
 
-        fun isDownloadAvailable() : Boolean {
-            return (instance.isExternalStorageReadable() && instance.isExternalStorageWritable())
-        }
-
-        fun formatFileName(name: String) : String {
-            return name.replace("\\s+", "_")
-        }
-
-        fun getDisplayName(name: String) : String {
-            return name.replace("_", " ")
+        fun formatFileName(name: String, format: String) : String {
+            return name.replace(" ", "_").plus(Constants.dot).plus(format)
         }
     }
 }
