@@ -36,6 +36,7 @@ class ListFragment : Fragment() {
                 VIDEO_CODE -> model.fetchVideoList()
                 PICTURE_CODE -> model.fetchPictures()
             }
+            instance = this
         } ?: run {
             requireActivity().onBackPressed()
         }
@@ -154,7 +155,7 @@ class ListFragment : Fragment() {
     }
 
     companion object {
-
+        private lateinit var instance: ListFragment
         private const val LIST_TYPE = "type"
 
         @JvmStatic
@@ -164,6 +165,16 @@ class ListFragment : Fragment() {
                     putInt(LIST_TYPE, type)
                 }
             }
+
+        fun refreshList(type: Int) {
+            if (this::instance.isInitialized) {
+                when (type) {
+                    MUSIC_CODE -> instance.showMusicLists()
+                    VIDEO_CODE -> instance.showVideoList()
+                    PICTURE_CODE -> instance.showPictures()
+                }
+            }
+        }
     }
 
 }

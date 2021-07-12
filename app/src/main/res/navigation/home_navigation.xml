@@ -83,22 +83,6 @@
         tools:layout="@layout/fragment_video_detail"/>
 
     <fragment
-        android:id="@+id/nav_favorite"
-        android:name="com.example.rikki.musicnow.ui.home.FavoriteFragment"
-        android:label="@string/favorites"
-        tools:layout="@layout/fragment_favorite">
-        <action
-            android:id="@+id/action_favorite_to_music_detail"
-            app:destination="@id/nav_music_detail"/>
-        <action
-            android:id="@+id/action_favorite_to_video_detail"
-            app:destination="@id/nav_video_detail"/>
-        <action
-            android:id="@+id/action_favorite_to_picture_detail"
-            app:destination="@id/nav_picture_detail"/>
-    </fragment>
-
-    <fragment
         android:id="@+id/nav_my_zone"
         android:name="com.example.rikki.musicnow.ui.home.MyZoneFragment"
         android:label="@string/drawer_myZone"

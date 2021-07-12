@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.rikki.musicnow.HomeActivity
 import com.example.rikki.musicnow.R
 import com.example.rikki.musicnow.databinding.FragmentFavoriteBinding
@@ -30,6 +31,7 @@ class FavoriteFragment : Fragment() {
         arguments?.let {
             type = it.getInt(FAV_TYPE)
         }
+        instance = this
     }
 
     override fun onCreateView(
@@ -61,13 +63,14 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun showPictures() {
+        picList.clear()
         HomeActivity.picList.forEach {
             if (it.isFavorited)
                 picList.add(it)
         }
         val pictureAdapter = PictureAdapter(picList, true) { id ->
             findNavController().navigate(
-                R.id.action_favorite_to_picture_detail,
+                R.id.action_picture_to_detail,
                 bundleOf(PictureDetailFragment.ID to id)
             )
         }
@@ -78,13 +81,14 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun showVideoList() {
+        videoList.clear()
         HomeActivity.videoList.forEach {
             if (it.isFavorited)
                 videoList.add(it)
         }
         val videoAdapter = VideoAdapter(videoList, true) {
             findNavController().navigate(
-                R.id.action_favorite_to_video_detail,
+                R.id.action_video_to_detail,
                 bundleOf(VideoDetailFragment.ID to it)
             )
         }
@@ -95,13 +99,14 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun showMusicList() {
+        musicList.clear()
         HomeActivity.musicList.forEach {
             if (it.isFavorited)
                 musicList.add(it)
         }
         val musicAdapter = MusicAdapter(musicList, true) {
             findNavController().navigate(
-                R.id.action_favorite_to_music_detail,
+                R.id.action_music_to_detail,
                 bundleOf(MusicDetailFragment.ID to it)
             )
         }
@@ -113,12 +118,16 @@ class FavoriteFragment : Fragment() {
 
     override fun onDestroyView() {
         binding = null
+        musicList.clear()
+        videoList.clear()
+        picList.clear()
         super.onDestroyView()
     }
 
     companion object {
-
+        private lateinit var instance: FavoriteFragment
         private const val FAV_TYPE = "type"
+        private lateinit var adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         @JvmStatic
         fun newInstance(type: Int) =
@@ -127,6 +136,16 @@ class FavoriteFragment : Fragment() {
                     putInt(FAV_TYPE, type)
                 }
             }
+
+        fun refreshList(type: Int) {
+            if (this::instance.isInitialized) {
+                when (type) {
+                    Constants.MUSIC_CODE -> instance.showMusicList()
+                    Constants.VIDEO_CODE -> instance.showVideoList()
+                    Constants.PICTURE_CODE -> instance.showPictures()
+                }
+            }
+        }
     }
 
 }
