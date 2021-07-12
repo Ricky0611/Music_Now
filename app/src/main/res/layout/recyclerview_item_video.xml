@@ -9,49 +9,68 @@
     app:cardPreventCornerOverlap="true"
     android:layout_margin="5dp">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/video_poster"
             android:layout_width="0dp"
             android:layout_height="@dimen/image_height"
-            android:src="@drawable/image_unavailable"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline"
             android:adjustViewBounds="true"
-            android:layout_weight="0.4"/>
+            android:contentDescription="@null"
+            android:src="@drawable/image_unavailable" />
+
+        <ImageView
+            android:id="@+id/favBtn"
+            android:layout_width="@dimen/fav_size"
+            android:layout_height="@dimen/fav_size"
+            app:layout_constraintEnd_toEndOf="@id/video_poster"
+            app:layout_constraintBottom_toBottomOf="@id/video_poster"
+            android:adjustViewBounds="true"
+            android:src="@drawable/favorite_off"
+            android:contentDescription="@string/favorite_button" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="0.6">
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/video_main_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:textColor="@color/black"
                 android:textSize="36sp"
-                android:textStyle="normal|bold"
-                android:textAlignment="center"/>
+                android:textStyle="normal|bold" />
 
             <TextView
                 android:id="@+id/video_main_desc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
-                android:textAlignment="viewStart"
-                android:ellipsize="end"/>
+                android:ellipsize="end"
+                android:textAlignment="viewStart" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

@@ -23,6 +23,16 @@
             android:src="@drawable/image_unavailable"
             android:contentDescription="@string/unavailable_image"/>
 
+        <ImageView
+            android:id="@+id/favBtn"
+            android:layout_width="@dimen/fav_size"
+            android:layout_height="@dimen/fav_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/musicPic"
+            android:adjustViewBounds="true"
+            android:src="@drawable/favorite_off"
+            android:contentDescription="@string/favorite_button" />
+
         <TextView
             android:id="@+id/musicTitle"
             android:layout_width="match_parent"
