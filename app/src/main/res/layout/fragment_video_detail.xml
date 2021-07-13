@@ -24,19 +24,30 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/downloadBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/videoName"
+        android:layout_width="@dimen/fav_size"
+        android:layout_height="@dimen/fav_size"
+        app:layout_constraintTop_toBottomOf="@id/videoName"
         app:layout_constraintEnd_toEndOf="@id/videoName"
         android:src="@drawable/ic_download"
         android:adjustViewBounds="true"/>
+
+    <ImageView
+        android:id="@+id/favBtn"
+        android:layout_width="@dimen/fav_size"
+        android:layout_height="@dimen/fav_size"
+        app:layout_constraintTop_toTopOf="@id/downloadBtn"
+        app:layout_constraintEnd_toStartOf="@id/downloadBtn"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/favorite_off"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/favorite_button"/>
 
     <FrameLayout
         android:id="@+id/videoSection"
         android:layout_width="match_parent"
         android:layout_height="@dimen/image_height"
         app:layout_constraintTop_toBottomOf="@id/videoName"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="@dimen/fav_size">
 
         <VideoView
             android:id="@+id/videoView"

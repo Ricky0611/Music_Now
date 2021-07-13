@@ -34,6 +34,17 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/unavailable_image" />
 
+    <ImageView
+        android:id="@+id/favBtn"
+        android:layout_width="@dimen/fav_size"
+        android:layout_height="@dimen/fav_size"
+        app:layout_constraintTop_toTopOf="@id/music_detail_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/favorite_off"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/favorite_button"
+        android:visibility="gone"/>
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/timezone"
         android:layout_width="match_parent"

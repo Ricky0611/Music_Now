@@ -68,10 +68,29 @@ class PictureDetailFragment : Fragment() {
                 .error(R.drawable.image_unavailable).into(
                     binding?.picture
                 )
-            binding?.downloadBtn?.isVisible =
-                SPController.getInstance(requireActivity()).hasUserLoggedIn()
-            binding?.downloadBtn?.setOnClickListener {
-                downloadPicture()
+            val isLogin = SPController.getInstance(requireActivity()).hasUserLoggedIn()
+            binding?.downloadBtn?.apply {
+                isVisible = isLogin
+                setOnClickListener {
+                    downloadPicture()
+                }
+            }
+            binding?.favBtn?.apply {
+                isVisible = isLogin
+                if (picture.isFavorited) {
+                    setImageResource(R.drawable.favorite_on)
+                } else {
+                    setImageResource(R.drawable.favorite_off)
+                }
+                setOnClickListener {
+                    if (picture.isFavorited) {
+                        setImageResource(R.drawable.favorite_off)
+                        picture.isFavorited = false
+                    } else {
+                        setImageResource(R.drawable.favorite_on)
+                        picture.isFavorited = true
+                    }
+                }
             }
         } else {
             cannotDisplay()
