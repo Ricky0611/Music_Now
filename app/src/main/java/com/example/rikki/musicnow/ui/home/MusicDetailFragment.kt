@@ -78,6 +78,25 @@ class MusicDetailFragment : Fragment(), MediaPlayer.OnPreparedListener, MediaPla
                 .error(R.drawable.image_unavailable).into(
                     binding?.musicDetailImage
                 )
+            if (SPController.getInstance(requireActivity()).hasUserLoggedIn()) {
+                binding?.favBtn?.apply {
+                    visibility = View.VISIBLE
+                    if (musicRecord.isFavorited) {
+                        setImageResource(R.drawable.favorite_on)
+                    } else {
+                        setImageResource(R.drawable.favorite_off)
+                    }
+                    setOnClickListener {
+                        if (musicRecord.isFavorited) {
+                            setImageResource(R.drawable.favorite_off)
+                            musicRecord.isFavorited = false
+                        } else {
+                            setImageResource(R.drawable.favorite_on)
+                            musicRecord.isFavorited = true
+                        }
+                    }
+                }
+            }
             binding?.musicDetailImage?.contentDescription = musicRecord.name
             player = MediaPlayer().apply {
                 setAudioAttributes(

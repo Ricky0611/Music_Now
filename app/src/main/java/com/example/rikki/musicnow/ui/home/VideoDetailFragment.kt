@@ -65,9 +65,27 @@ class VideoDetailFragment : Fragment() {
                 binding?.startBtn?.visibility = View.GONE
                 binding?.videoView?.start()
             }
+            val isLogin = SPController.getInstance(requireActivity()).hasUserLoggedIn()
+            // setup favorite button
+            binding?.favBtn?.apply {
+                isVisible = isLogin
+                if (video.isFavorited) {
+                    setImageResource(R.drawable.favorite_on)
+                } else {
+                    setImageResource(R.drawable.favorite_off)
+                }
+                setOnClickListener {
+                    if (video.isFavorited) {
+                        setImageResource(R.drawable.favorite_off)
+                        video.isFavorited = false
+                    } else {
+                        setImageResource(R.drawable.favorite_on)
+                        video.isFavorited = true
+                    }
+                }
+            }
             // setup download button
-            binding?.downloadBtn?.isVisible =
-                SPController.getInstance(requireActivity()).hasUserLoggedIn()
+            binding?.downloadBtn?.isVisible = isLogin
             binding?.downloadBtn?.setOnClickListener {
                 downloadVideo()
             }

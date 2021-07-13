@@ -82,4 +82,7 @@
     <string name="download_status_success">Download completed!</string>
     <string name="download_status_failed">Download failed. %s</string>
     <string name="unavailable_offline">There is no downloaded resource available!</string>
+    <!-- Favorite -->
+    <string name="favorite_button">Favorite button</string>
+    <string name="unavailable_favorite">There is no resource in your favorite list!</string>
 </resources>

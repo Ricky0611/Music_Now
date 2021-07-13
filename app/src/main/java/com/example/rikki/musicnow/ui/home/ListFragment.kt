@@ -18,6 +18,7 @@ import com.example.rikki.musicnow.utils.Constants.PICTURE_CODE
 import com.example.rikki.musicnow.utils.Constants.VIDEO_CODE
 import com.example.rikki.musicnow.utils.MusicAdapter
 import com.example.rikki.musicnow.utils.PictureAdapter
+import com.example.rikki.musicnow.utils.SPController
 import com.example.rikki.musicnow.utils.VideoAdapter
 
 class ListFragment : Fragment() {
@@ -35,6 +36,7 @@ class ListFragment : Fragment() {
                 VIDEO_CODE -> model.fetchVideoList()
                 PICTURE_CODE -> model.fetchPictures()
             }
+            instance = this
         } ?: run {
             requireActivity().onBackPressed()
         }
@@ -45,14 +47,16 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListBinding.inflate(inflater, container, false)
+        return binding?.root
+    }
 
+    override fun onResume() {
+        super.onResume()
         when (type) {
             MUSIC_CODE -> showMusicLists()
             VIDEO_CODE -> showVideoList()
             PICTURE_CODE -> showPictures()
         }
-
-        return binding?.root
     }
 
     private fun showVideoList() {
@@ -60,12 +64,13 @@ class ListFragment : Fragment() {
         binding?.musicListView?.visibility = View.GONE
         binding?.mainRecyclerView?.visibility = View.VISIBLE
         // show data
+        val isLogin = SPController.getInstance(requireActivity()).hasUserLoggedIn()
         model.getVideoList().observe(viewLifecycleOwner, { list ->
             if (list.isEmpty()) {
                 Toast.makeText(requireActivity(), R.string.unavailable_video_list, Toast.LENGTH_LONG).show()
                 requireActivity().onBackPressed()
             } else {
-                val videoAdapter = VideoAdapter(list) {
+                val videoAdapter = VideoAdapter(list, isLogin) {
                     findNavController().navigate(
                         R.id.action_video_to_detail,
                         bundleOf(VideoDetailFragment.ID to it)
@@ -84,8 +89,9 @@ class ListFragment : Fragment() {
         binding?.musicListView?.visibility = View.VISIBLE
         binding?.mainRecyclerView?.visibility = View.GONE
         // show data
+        val isLogin = SPController.getInstance(requireActivity()).hasUserLoggedIn()
         model.getMusicNew().observe(viewLifecycleOwner, { list ->
-            val musicAdapter = MusicAdapter(list) {
+            val musicAdapter = MusicAdapter(list, isLogin) {
                 findNavController().navigate(
                     R.id.action_music_to_detail,
                     bundleOf(MusicDetailFragment.ID to it)
@@ -97,7 +103,7 @@ class ListFragment : Fragment() {
             }
         })
         model.getMusicTopPlayed().observe(viewLifecycleOwner, { list ->
-            val musicAdapter = MusicAdapter(list) {
+            val musicAdapter = MusicAdapter(list, isLogin) {
                 findNavController().navigate(
                     R.id.action_music_to_detail,
                     bundleOf(MusicDetailFragment.ID to it)
@@ -109,7 +115,7 @@ class ListFragment : Fragment() {
             }
         })
         model.getMusicTopComp().observe(viewLifecycleOwner, { list ->
-            val musicAdapter = MusicAdapter(list) {
+            val musicAdapter = MusicAdapter(list, isLogin) {
                 findNavController().navigate(
                     R.id.action_music_to_detail,
                     bundleOf(MusicDetailFragment.ID to it)
@@ -127,11 +133,12 @@ class ListFragment : Fragment() {
         binding?.musicListView?.visibility = View.GONE
         binding?.mainRecyclerView?.visibility = View.VISIBLE
         // show data
+        val isLogin = SPController.getInstance(requireActivity()).hasUserLoggedIn()
         model.getPictures().observe(viewLifecycleOwner, { list ->
             if (list.isEmpty()) {
                 list.add(MyPicture("", "", getString(R.string.unavailable_image), ""))
             }
-            val pictureAdapter = PictureAdapter(list) { id ->
+            val pictureAdapter = PictureAdapter(list, isLogin) { id ->
                 findNavController().navigate(
                     R.id.action_picture_to_detail,
                     bundleOf(PictureDetailFragment.ID to id)
@@ -150,7 +157,7 @@ class ListFragment : Fragment() {
     }
 
     companion object {
-
+        private lateinit var instance: ListFragment
         private const val LIST_TYPE = "type"
 
         @JvmStatic

@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rikki.musicnow.HomeActivity
 import com.example.rikki.musicnow.R
-import com.example.rikki.musicnow.databinding.FragmentOfflineBinding
+import com.example.rikki.musicnow.databinding.FragmentMyZoneBinding
 import com.example.rikki.musicnow.model.MyMusic
 import com.example.rikki.musicnow.model.MyPicture
 import com.example.rikki.musicnow.model.MyVideo
@@ -19,9 +19,9 @@ import com.example.rikki.musicnow.utils.MusicAdapter
 import com.example.rikki.musicnow.utils.PictureAdapter
 import com.example.rikki.musicnow.utils.VideoAdapter
 
-class OfflineFragment : Fragment() {
+class MyZoneFragment : Fragment() {
 
-    private var binding: FragmentOfflineBinding? = null
+    private var binding: FragmentMyZoneBinding? = null
     private var musicList: ArrayList<MyMusic> = arrayListOf()
     private var videoList: ArrayList<MyVideo> = arrayListOf()
     private var picList: ArrayList<MyPicture> = arrayListOf()
@@ -30,41 +30,40 @@ class OfflineFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentOfflineBinding.inflate(inflater, container, false)
+        binding = FragmentMyZoneBinding.inflate(inflater, container, false)
 
-        getDownloadedResources()
+        instance = this
+
+        getFavoriteList()
 
         return binding?.root
     }
 
-    private fun getDownloadedResources() {
-        HomeActivity.musicList.forEach {
-            if (it.isDownloaded)
-                musicList.add(it)
-        }
+    private fun getFavoriteList() {
         showMusic()
-        HomeActivity.videoList.forEach {
-            if (it.isDownloaded)
-                videoList.add(it)
-        }
         showVideo()
-        HomeActivity.picList.forEach {
-            if (it.isDownloaded)
-                picList.add(it)
-        }
         showPicture()
+        displayEmptyMessage()
+    }
+
+    private fun displayEmptyMessage(){
         if (musicList.isEmpty() && videoList.isEmpty() && picList.isEmpty()) {
-            Toast.makeText(requireActivity(), R.string.unavailable_offline, Toast.LENGTH_LONG).show()
+            Toast.makeText(requireActivity(), R.string.unavailable_favorite, Toast.LENGTH_LONG).show()
         }
     }
 
     private fun showPicture() {
-        if (picList.isEmpty()) {
-            binding?.pictureList?.visibility = View.GONE
-        } else {
+        picList.clear()
+        binding?.pictureList?.visibility = View.GONE
+        HomeActivity.picList.forEach {
+            if (it.isFavorited)
+                picList.add(it)
+        }
+        if (picList.isNotEmpty()) {
+            binding?.pictureList?.visibility = View.VISIBLE
             val pictureAdapter = PictureAdapter(picList, true) { id ->
                 findNavController().navigate(
-                    R.id.action_offline_to_picture_detail,
+                    R.id.action_zone_to_picture_detail,
                     bundleOf(PictureDetailFragment.ID to id)
                 )
             }
@@ -76,12 +75,17 @@ class OfflineFragment : Fragment() {
     }
 
     private fun showVideo() {
-        if (videoList.isEmpty()) {
-            binding?.videoList?.visibility = View.GONE
-        } else {
+        videoList.clear()
+        binding?.videoList?.visibility = View.GONE
+        HomeActivity.videoList.forEach {
+            if (it.isFavorited)
+                videoList.add(it)
+        }
+        if (videoList.isNotEmpty()) {
+            binding?.videoList?.visibility = View.VISIBLE
             val videoAdapter = VideoAdapter(videoList, true) {
                 findNavController().navigate(
-                    R.id.action_offline_to_video_detail,
+                    R.id.action_zone_to_video_detail,
                     bundleOf(VideoDetailFragment.ID to it)
                 )
             }
@@ -93,12 +97,17 @@ class OfflineFragment : Fragment() {
     }
 
     private fun showMusic() {
-        if (musicList.isEmpty()) {
-            binding?.musicList?.visibility = View.GONE
-        } else {
+        musicList.clear()
+        binding?.musicList?.visibility = View.GONE
+        HomeActivity.musicList.forEach {
+            if (it.isFavorited)
+                musicList.add(it)
+        }
+        if (musicList.isNotEmpty()) {
+            binding?.musicList?.visibility = View.VISIBLE
             val musicAdapter = MusicAdapter(musicList, true) {
                 findNavController().navigate(
-                    R.id.action_offline_to_music_detail,
+                    R.id.action_zone_to_music_detail,
                     bundleOf(MusicDetailFragment.ID to it)
                 )
             }
@@ -111,7 +120,19 @@ class OfflineFragment : Fragment() {
 
     override fun onDestroyView() {
         binding = null
+        musicList.clear()
+        videoList.clear()
+        picList.clear()
         super.onDestroyView()
     }
 
+    companion object {
+        private lateinit var instance: MyZoneFragment
+
+        fun refreshScreen() {
+            if (this::instance.isInitialized) {
+                instance.getFavoriteList()
+            }
+        }
+    }
 }
