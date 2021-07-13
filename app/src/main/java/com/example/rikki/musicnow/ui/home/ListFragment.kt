@@ -47,14 +47,16 @@ class ListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListBinding.inflate(inflater, container, false)
+        return binding?.root
+    }
 
+    override fun onResume() {
+        super.onResume()
         when (type) {
             MUSIC_CODE -> showMusicLists()
             VIDEO_CODE -> showVideoList()
             PICTURE_CODE -> showPictures()
         }
-
-        return binding?.root
     }
 
     private fun showVideoList() {
@@ -165,16 +167,6 @@ class ListFragment : Fragment() {
                     putInt(LIST_TYPE, type)
                 }
             }
-
-        fun refreshList(type: Int) {
-            if (this::instance.isInitialized) {
-                when (type) {
-                    MUSIC_CODE -> instance.showMusicLists()
-                    VIDEO_CODE -> instance.showVideoList()
-                    PICTURE_CODE -> instance.showPictures()
-                }
-            }
-        }
     }
 
 }

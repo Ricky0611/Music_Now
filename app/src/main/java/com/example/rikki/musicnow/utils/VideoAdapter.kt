@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rikki.musicnow.R
 import com.example.rikki.musicnow.model.MyVideo
 import com.example.rikki.musicnow.ui.home.FavoriteFragment
-import com.example.rikki.musicnow.ui.home.ListFragment
+import com.example.rikki.musicnow.ui.home.MyZoneFragment
+import com.example.rikki.musicnow.utils.Constants.VIDEO_CODE
 import com.squareup.picasso.Picasso
 
 class VideoAdapter(private val list: ArrayList<MyVideo>, private val isLogin: Boolean, private val onItemClicked: (String) -> Unit) : RecyclerView.Adapter<VideoAdapter.VideoViewHolder>() {
@@ -50,8 +51,8 @@ class VideoAdapter(private val list: ArrayList<MyVideo>, private val isLogin: Bo
                     holder.favBtn.setImageResource(R.drawable.favorite_on)
                     video.isFavorited = true
                 }
-                FavoriteFragment.refreshList(Constants.VIDEO_CODE)
-                ListFragment.refreshList(Constants.VIDEO_CODE)
+                FavoriteFragment.refreshList(VIDEO_CODE)
+                MyZoneFragment.refreshScreen()
             }
         } else {
             holder.favBtn.visibility = View.GONE

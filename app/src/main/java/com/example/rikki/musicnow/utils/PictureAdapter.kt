@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rikki.musicnow.R
 import com.example.rikki.musicnow.model.MyPicture
 import com.example.rikki.musicnow.ui.home.FavoriteFragment
-import com.example.rikki.musicnow.ui.home.ListFragment
+import com.example.rikki.musicnow.ui.home.MyZoneFragment
+import com.example.rikki.musicnow.utils.Constants.PICTURE_CODE
 import com.squareup.picasso.Picasso
 
 class PictureAdapter(private val list: ArrayList<MyPicture>, private val isLogin: Boolean, private val onItemClicked: (String) -> Unit) : RecyclerView.Adapter<PictureAdapter.PictureViewHolder>() {
@@ -51,8 +52,8 @@ class PictureAdapter(private val list: ArrayList<MyPicture>, private val isLogin
                     holder.favBtn.setImageResource(R.drawable.favorite_on)
                     picture.isFavorited = true
                 }
-                FavoriteFragment.refreshList(Constants.PICTURE_CODE)
-                ListFragment.refreshList(Constants.PICTURE_CODE)
+                FavoriteFragment.refreshList(PICTURE_CODE)
+                MyZoneFragment.refreshScreen()
             }
         } else {
             holder.favBtn.visibility = View.GONE

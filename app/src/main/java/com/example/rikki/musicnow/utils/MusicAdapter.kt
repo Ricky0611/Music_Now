@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.rikki.musicnow.R
 import com.example.rikki.musicnow.model.MyMusic
 import com.example.rikki.musicnow.ui.home.FavoriteFragment
-import com.example.rikki.musicnow.ui.home.ListFragment
+import com.example.rikki.musicnow.ui.home.MyZoneFragment
 import com.example.rikki.musicnow.utils.Constants.MUSIC_CODE
 import com.squareup.picasso.Picasso
 
@@ -52,7 +52,7 @@ class MusicAdapter(private val list: ArrayList<MyMusic>, private val isLogin: Bo
                     music.isFavorited = true
                 }
                 FavoriteFragment.refreshList(MUSIC_CODE)
-                ListFragment.refreshList(MUSIC_CODE)
+                MyZoneFragment.refreshScreen()
             }
         } else {
             holder.favBtn.visibility = View.GONE
