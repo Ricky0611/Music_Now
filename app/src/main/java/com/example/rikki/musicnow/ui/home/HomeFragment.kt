@@ -55,6 +55,11 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_home_to_pic)
         }
 
+        // go to My Zone section
+        binding?.zoneBtn?.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_zone)
+        }
+
         // go to Offline section
         binding?.downloadBtn?.setOnClickListener {
             findNavController().navigate(R.id.action_home_to_offline)

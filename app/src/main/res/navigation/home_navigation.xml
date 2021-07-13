@@ -21,6 +21,9 @@
             android:id="@+id/action_home_to_video"
             app:destination="@id/nav_video"/>
         <action
+            android:id="@+id/action_home_to_zone"
+            app:destination="@id/nav_my_zone"/>
+        <action
             android:id="@+id/action_home_to_offline"
             app:destination="@id/nav_offline"/>
     </fragment>
@@ -78,6 +81,22 @@
         android:name="com.example.rikki.musicnow.ui.home.VideoDetailFragment"
         android:label="@string/drawer_video"
         tools:layout="@layout/fragment_video_detail"/>
+
+    <fragment
+        android:id="@+id/nav_my_zone"
+        android:name="com.example.rikki.musicnow.ui.home.MyZoneFragment"
+        android:label="@string/drawer_myZone"
+        tools:layout="@layout/fragment_my_zone">
+        <action
+            android:id="@+id/action_zone_to_music_detail"
+            app:destination="@id/nav_music_detail"/>
+        <action
+            android:id="@+id/action_zone_to_video_detail"
+            app:destination="@id/nav_video_detail"/>
+        <action
+            android:id="@+id/action_zone_to_picture_detail"
+            app:destination="@id/nav_picture_detail"/>
+    </fragment>
 
     <fragment
         android:id="@+id/nav_offline"
