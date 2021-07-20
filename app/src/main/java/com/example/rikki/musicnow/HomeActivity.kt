@@ -26,15 +26,20 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.rikki.musicnow.databinding.ActivityHomeBinding
+import com.example.rikki.musicnow.db.User
 import com.example.rikki.musicnow.model.MyMusic
 import com.example.rikki.musicnow.model.MyPicture
 import com.example.rikki.musicnow.model.MyVideo
 import com.example.rikki.musicnow.ui.home.HomeViewModel
+import com.example.rikki.musicnow.utils.AppController
 import com.example.rikki.musicnow.utils.Constants
 import com.example.rikki.musicnow.utils.Constants.MUSIC_CODE
 import com.example.rikki.musicnow.utils.Constants.PICTURE_CODE
 import com.example.rikki.musicnow.utils.Constants.VIDEO_CODE
+import com.example.rikki.musicnow.utils.Constants.deliminator
 import com.example.rikki.musicnow.utils.SPController
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 
 class HomeActivity : AppCompatActivity() {
@@ -53,6 +58,7 @@ class HomeActivity : AppCompatActivity() {
 
         initUI()
         initResourceLists()
+        AppController.initializeDB(applicationContext)
     }
 
     private fun initResourceLists() {
@@ -64,24 +70,29 @@ class HomeActivity : AppCompatActivity() {
         model.getMusicNew().observe(this, {
             musicList.addAll(it)
             checkDownload(MUSIC_CODE)
+            checkFavorited(MUSIC_CODE)
         })
         model.getMusicTopPlayed().observe(this, {
             musicList.addAll(it)
             checkDownload(MUSIC_CODE)
+            checkFavorited(MUSIC_CODE)
         })
         model.getMusicTopComp().observe(this, {
             musicList.addAll(it)
             checkDownload(MUSIC_CODE)
+            checkFavorited(MUSIC_CODE)
         })
         model.fetchVideoList()
         model.getVideoList().observe(this, {
             videoList = it
             checkDownload(VIDEO_CODE)
+            checkFavorited(VIDEO_CODE)
         })
         model.fetchPictures()
         model.getPictures().observe(this, {
             picList = it
             checkDownload(PICTURE_CODE)
+            checkFavorited(PICTURE_CODE)
         })
     }
 
@@ -327,6 +338,70 @@ class HomeActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    @Synchronized
+    private fun checkFavorited(type: Int) {
+        val mobile = SPController.getInstance(this).getUserMobile()
+        GlobalScope.launch {
+            AppController.getUserDao().findByMobile(mobile).let { list ->
+                if (list.isNotEmpty()) {
+                    val user = list[0]
+                    when (type) {
+                        MUSIC_CODE -> {
+                            val favList = user.favMusicList.split(deliminator)
+                            musicList.forEach { music ->
+                                if (favList.contains(music.id)) {
+                                    music.isFavorited = true
+                                }
+                            }
+                        }
+                        VIDEO_CODE -> {
+                            val favList = user.favVideoList.split(deliminator)
+                            videoList.forEach { video ->
+                                if (favList.contains(video.id)) {
+                                    video.isFavorited = true
+                                }
+                            }
+                        }
+                        PICTURE_CODE -> {
+                            val favList = user.favPicList.split(deliminator)
+                            picList.forEach { picture ->
+                                if (favList.contains(picture.id)) {
+                                    picture.isFavorited = true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun saveFavoriteList() {
+        val mobile = SPController.getInstance(this).getUserMobile()
+        GlobalScope.launch {
+            AppController.getUserDao().findByMobile(mobile).let { list ->
+                if (list.isNotEmpty()) {
+                    val user = User(
+                        list[0].mobile,
+                        list[0].username,
+                        list[0].email,
+                        list[0].password,
+                        musicList.filter { it.isFavorited }.joinToString(deliminator) { it.id },
+                        videoList.filter { it.isFavorited }.joinToString(deliminator) { it.id },
+                        picList.filter { it.isFavorited }.joinToString(deliminator) { it.id }
+                    )
+                    AppController.getUserDao().insert(user)
+                }
+            }
+        }
+    }
+
+    override fun onStop() {
+        saveFavoriteList()
+        super.onStop()
     }
 
     companion object {

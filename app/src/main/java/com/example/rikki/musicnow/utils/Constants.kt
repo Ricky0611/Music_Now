@@ -27,6 +27,7 @@ object Constants {
     const val videos_header = "Videos"
     const val video_header = "Video"
     const val dot = "."
+    const val deliminator = ";"
     // password pattern
     val passwordPattern: Pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,10}\$")
     // urls
