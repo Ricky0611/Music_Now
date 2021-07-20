@@ -102,7 +102,7 @@ class PictureDetailFragment : Fragment() {
             Toast.makeText(requireActivity(), R.string.picture_downloaded, Toast.LENGTH_LONG).show()
         } else {
             val name = HomeActivity.formatFileName(picture.title, picture.format)
-            val path = requireActivity().filesDir.absolutePath
+            val path = (requireActivity() as HomeActivity).getAppSpecificFolder(requireActivity()).absolutePath
             Log.d("Picture ${picture.id}", "$path/$name")
             model.download(path, name, picture.url)
             model.getDownloadProgress().observe(viewLifecycleOwner, { progress ->

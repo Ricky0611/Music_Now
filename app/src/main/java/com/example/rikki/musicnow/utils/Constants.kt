@@ -11,6 +11,8 @@ object Constants {
     const val INTERNET_REQUEST = 1
     // progress
     const val MAX = 100
+    // download size
+    const val MAX_SIZE = 4096
     // function code
     const val MUSIC_CODE = 1
     const val VIDEO_CODE = 2
@@ -25,6 +27,7 @@ object Constants {
     const val videos_header = "Videos"
     const val video_header = "Video"
     const val dot = "."
+    const val deliminator = ";"
     // password pattern
     val passwordPattern: Pattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,10}\$")
     // urls
