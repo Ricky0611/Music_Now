@@ -11,6 +11,8 @@ object Constants {
     const val INTERNET_REQUEST = 1
     // progress
     const val MAX = 100
+    // download size
+    const val MAX_SIZE = 4096
     // function code
     const val MUSIC_CODE = 1
     const val VIDEO_CODE = 2

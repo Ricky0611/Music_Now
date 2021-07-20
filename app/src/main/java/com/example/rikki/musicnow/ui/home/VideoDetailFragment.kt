@@ -131,7 +131,7 @@ class VideoDetailFragment : Fragment() {
             Toast.makeText(requireActivity(), R.string.video_downloaded, Toast.LENGTH_LONG).show()
         } else {
             val name = HomeActivity.formatFileName(video.name, video.format)
-            val path = requireActivity().filesDir.absolutePath
+            val path = (requireActivity() as HomeActivity).getAppSpecificFolder(requireActivity()).absolutePath
             Log.d("Video ${video.id}", "$path/$name")
             model.download(path, name, video.url)
             model.getDownloadProgress().observe(viewLifecycleOwner, { progress ->

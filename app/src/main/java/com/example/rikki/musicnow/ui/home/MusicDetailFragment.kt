@@ -216,7 +216,7 @@ class MusicDetailFragment : Fragment(), MediaPlayer.OnPreparedListener, MediaPla
             Toast.makeText(requireActivity(), R.string.music_downloaded, Toast.LENGTH_SHORT).show()
         } else {
             val name = HomeActivity.formatFileName(musicRecord.name, musicRecord.format)
-            val path = requireActivity().filesDir.absolutePath
+            val path = (requireActivity() as HomeActivity).getAppSpecificFolder(requireActivity()).absolutePath
             Log.d("Music ${musicRecord.id}", "$path/$name")
             model.download(path, name, musicRecord.url)
             model.getDownloadProgress().observe(viewLifecycleOwner, { progress ->

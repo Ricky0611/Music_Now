@@ -31,6 +31,9 @@ import com.example.rikki.musicnow.model.MyPicture
 import com.example.rikki.musicnow.model.MyVideo
 import com.example.rikki.musicnow.ui.home.HomeViewModel
 import com.example.rikki.musicnow.utils.Constants
+import com.example.rikki.musicnow.utils.Constants.MUSIC_CODE
+import com.example.rikki.musicnow.utils.Constants.PICTURE_CODE
+import com.example.rikki.musicnow.utils.Constants.VIDEO_CODE
 import com.example.rikki.musicnow.utils.SPController
 import java.io.File
 
@@ -57,20 +60,28 @@ class HomeActivity : AppCompatActivity() {
         videoList = arrayListOf()
         picList = arrayListOf()
         val model: HomeViewModel by viewModels()
+        model.fetchMusicLists()
         model.getMusicNew().observe(this, {
             musicList.addAll(it)
+            checkDownload(MUSIC_CODE)
         })
         model.getMusicTopPlayed().observe(this, {
             musicList.addAll(it)
+            checkDownload(MUSIC_CODE)
         })
         model.getMusicTopComp().observe(this, {
             musicList.addAll(it)
+            checkDownload(MUSIC_CODE)
         })
+        model.fetchVideoList()
         model.getVideoList().observe(this, {
             videoList = it
+            checkDownload(VIDEO_CODE)
         })
+        model.fetchPictures()
         model.getPictures().observe(this, {
             picList = it
+            checkDownload(PICTURE_CODE)
         })
     }
 
@@ -265,31 +276,57 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun getAppSpecificPictureStorageDir(context: Context, picName: String): File {
-        val file = File(context.filesDir, picName)
-        if (!file.exists()) {
-            Log.d("AppStorage_Picture", "Directory not exists")
-            file.mkdirs()
+    fun getAppSpecificFolder(context: Context): File {
+        val folderName = SPController.getInstance(this).getUserMobile()
+        val path = File(context.filesDir, folderName)
+        if (!path.exists()) {
+            Log.d("AppStorage", "Directory ${path.absolutePath} not exists")
+            path.mkdirs()
         }
-        return file
+        return path
+    }
+
+    fun getAppSpecificPictureStorageDir(context: Context, picName: String): File {
+        return File(getAppSpecificFolder(context), picName)
     }
 
     fun getAppSpecificMusicStorageDir(context: Context, musicName: String): File {
-        val file = File(context.filesDir, musicName)
-        if (!file.exists()) {
-            Log.d("AppStorage_Music", "Directory not exists")
-            file.mkdirs()
-        }
-        return file
+        return File(getAppSpecificFolder(context), musicName)
     }
 
     fun getAppSpecificVideoStorageDir(context: Context, movieName: String): File {
-        val file = File(context.filesDir, movieName)
-        if (!file.exists()) {
-            Log.d("AppStorage_Video", "Directory not exists")
-            file.mkdirs()
+        return File(getAppSpecificFolder(context), movieName)
+    }
+
+    @Synchronized
+    private fun checkDownload(type: Int) {
+        val files = getAppSpecificFolder(this).list()?.asList() ?: listOf<String>()
+        when (type) {
+            MUSIC_CODE -> {
+                musicList.forEach { music ->
+                    val name = formatFileName(music.name, music.format)
+                    if (files.contains(name)) {
+                        music.isDownloaded = true
+                    }
+                }
+            }
+            VIDEO_CODE -> {
+                videoList.forEach { video ->
+                    val name = formatFileName(video.name, video.format)
+                    if (files.contains(name)) {
+                        video.isDownloaded = true
+                    }
+                }
+            }
+            PICTURE_CODE -> {
+                picList.forEach { picture ->
+                    val name = formatFileName(picture.title, picture.format)
+                    if (files.contains(name)) {
+                        picture.isDownloaded = true
+                    }
+                }
+            }
         }
-        return file
     }
 
     companion object {
