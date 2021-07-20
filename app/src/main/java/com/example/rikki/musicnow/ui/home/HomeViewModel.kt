@@ -13,6 +13,7 @@ import com.example.rikki.musicnow.model.MyPicture
 import com.example.rikki.musicnow.model.MyVideo
 import com.example.rikki.musicnow.utils.AppController
 import com.example.rikki.musicnow.utils.Constants.MAX
+import com.example.rikki.musicnow.utils.Constants.MAX_SIZE
 import com.example.rikki.musicnow.utils.Constants.dot
 import com.example.rikki.musicnow.utils.Constants.music_header
 import com.example.rikki.musicnow.utils.Constants.picture_header
@@ -285,7 +286,7 @@ class HomeViewModel : ViewModel() {
                 input = connection.inputStream
                 val file = File(path, name)
                 output = FileOutputStream(file)
-                val data = ByteArray(4096)
+                val data = ByteArray(MAX_SIZE)
                 var count: Int
                 while (input.read(data).also { count = it } != -1) {
                     output.write(data, 0, count)

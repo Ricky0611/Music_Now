@@ -3,6 +3,9 @@ package com.example.rikki.musicnow.utils
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.example.rikki.musicnow.db.User
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class SPController private constructor(context: Context) {
 
@@ -20,6 +23,9 @@ class SPController private constructor(context: Context) {
             this.putString(PREFS_KEY_MOBILE, mobile)
             this.putString(PREFS_KEY_EMAIL, email)
             this.putString(PREFS_KEY_PWD, password)
+        }
+        GlobalScope.launch {
+            AppController.getUserDao().insert(User(mobile, name, email, password, "", "", ""))
         }
     }
 
