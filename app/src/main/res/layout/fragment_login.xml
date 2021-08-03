@@ -103,11 +103,19 @@
         android:textColor="@color/purple_500" />
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/divider3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/resetBtn"
         android:layout_marginTop="15dp"
         app:srcCompat="@drawable/line"
         android:adjustViewBounds="true"/>
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebookBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/divider3"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

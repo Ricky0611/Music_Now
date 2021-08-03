@@ -28,6 +28,12 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.Music_Now.NoActionBar" />
         <activity android:name=".LoginActivity" />
+        <!-- Facebook -->
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

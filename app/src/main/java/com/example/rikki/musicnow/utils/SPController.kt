@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.example.rikki.musicnow.db.User
+import com.facebook.AccessToken
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -14,7 +15,17 @@ class SPController private constructor(context: Context) {
     }
 
     fun hasUserLoggedIn(): Boolean {
-        return settings.contains(PREFS_KEY_MOBILE)
+        return if (settings.contains(PREFS_KEY_MOBILE)) {
+            if (getUserPassword().isEmpty()) {
+                val token = AccessToken.getCurrentAccessToken()
+                val isLoggedIn = (token != null) && (!token.isExpired)
+                isLoggedIn
+            } else {
+                true
+            }
+        } else {
+            false
+        }
     }
 
     fun saveUser(name: String, mobile: String, email: String, password: String) {
