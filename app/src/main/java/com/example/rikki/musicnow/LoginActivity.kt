@@ -3,15 +3,20 @@ package com.example.rikki.musicnow
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.Network
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.rikki.musicnow.ui.login.LoginFragment
 import com.example.rikki.musicnow.utils.Constants.INTERNET_REQUEST
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 
 class LoginActivity : AppCompatActivity() {
 
@@ -21,7 +26,10 @@ class LoginActivity : AppCompatActivity() {
 
         instance = this
 
-        isInternetAvailable(this)
+        if (isInternetAvailable(this)) {
+            FacebookSdk.fullyInitialize()
+            AppEventsLogger.activateApp(application)
+        }
     }
 
     private fun connectInternet() {
@@ -79,6 +87,18 @@ class LoginActivity : AppCompatActivity() {
             }
         }.create()
         dialog.show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.d("LoginActivity", "onActivityResult - $requestCode, $resultCode, ${data?.extras.toString()}")
+        supportFragmentManager.findFragmentById(R.id.nav_login_fragment)?.let { navFragment ->
+            navFragment.childFragmentManager.primaryNavigationFragment?.let {
+                if (it is LoginFragment) {
+                    it.onActivityResult(requestCode, resultCode, data)
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     companion object {
