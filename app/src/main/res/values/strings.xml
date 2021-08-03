@@ -85,4 +85,8 @@
     <!-- Favorite -->
     <string name="favorite_button">Favorite button</string>
     <string name="unavailable_favorite">There is no resource in your favorite list!</string>
+    <!-- Facebook -->
+    <string name="facebook_app_id">351652475212828</string>
+    <string name="fb_login_protocol_scheme">fb351652475212828</string>
+    <string name="fb_login_failed">Failed to login via Facebook!</string>
 </resources>

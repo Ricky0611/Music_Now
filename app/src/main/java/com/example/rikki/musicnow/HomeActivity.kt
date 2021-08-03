@@ -38,6 +38,7 @@ import com.example.rikki.musicnow.utils.Constants.PICTURE_CODE
 import com.example.rikki.musicnow.utils.Constants.VIDEO_CODE
 import com.example.rikki.musicnow.utils.Constants.deliminator
 import com.example.rikki.musicnow.utils.SPController
+import com.facebook.login.LoginManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
@@ -109,7 +110,7 @@ class HomeActivity : AppCompatActivity() {
 
         // floating button show when not signed-in
         fab.isVisible = !isUserActive
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             loginAlertDialog.show()
         }
 
@@ -189,8 +190,14 @@ class HomeActivity : AppCompatActivity() {
             setTitle(R.string.drawer_logout)
             setMessage(R.string.logout_hint)
             setPositiveButton(R.string.button_logout) { dialog, which ->
-                SPController.getInstance(this@HomeActivity).deleteUser()
+                SPController.getInstance(this@HomeActivity).apply {
+                    if (getUserPassword().isEmpty()) {
+                        LoginManager.getInstance().logOut()
+                    }
+                    deleteUser()
+                }
                 dialog.dismiss()
+                binding.drawerLayout.closeDrawer(GravityCompat.START)
                 recreate()
             }
             setNegativeButton(R.string.button_cancel) { dialog, which ->
