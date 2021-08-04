@@ -1,0 +1,79 @@
+# This is a basic workflow to automatically test at each commit to git repo.
+
+name: Android Test
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on pull request events
+  pull_request:
+    branches: [ master, staging ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  apiTest:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Install Node.js
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      # Install Newman
+      - name: Install Newman
+        run: |
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+      # Make directory to upload the test results
+      - name: Make Directory for Results
+        run: mkdir -p testResults
+      # Run the POSTMAN Collection
+      - name: Run POSTMAN Collection
+        run: |
+          newman run ./postman/MusicNow-collection.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
+      # Upload the contents of Test Results directory to workspace
+      - name: Output the Run Details
+        uses: actions/upload-artifact@v2
+        with:
+          name: RunReports
+          path: testResults
+
+  androidUiTest:
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      # Grant execute permission for gradlew
+      - name: Grant Permission
+        run: chmod +x gradlew
+      # Run UI Tests
+      - name: Run UI Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 25
+          target: default
+          arch: x86
+          profile: Galaxy Nexus
+          disable-animations: true
+          script: ./gradlew connectedCheck --stacktrace
+
+  androidUnitTest:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE, so the job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Setup JDK
+      - name: Setup JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+      # Grant execute permission for gradlew
+      - name: Grant Permission
+        run: chmod +x gradlew
+      # Assemble and Test Project
+      - name: Build Project
+        run: ./gradlew build
