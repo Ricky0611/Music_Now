@@ -1,14 +1,14 @@
-# This is a basic workflow to automatically build and test at each commit to git repo.
+# This is a basic workflow to automatically build and release at each commit to git repo.
 
 name: Android Build
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
+  # Triggers the workflow on push events for the master branch
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  tags:
+    - 'v*'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -19,7 +19,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out the repository under $GITHUB_WORKSPACE, so the job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       # Setup JDK
       - name: Setup JDK
         uses: actions/setup-java@v2
@@ -33,48 +34,49 @@ jobs:
       - name: Build Project
         run: ./gradlew build
 
-  androidUiTest:
-    runs-on: macOS-latest
+  apk:
+    needs: build
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      # Grant execute permission for gradlew
-      - name: Grant Permission
-        run: chmod +x gradlew
-      # Run UI Tests
-      - name: Run UI Tests
-        uses: reactivecircus/android-emulator-runner@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup JDK
+        uses: actions/setup-java@v2
         with:
-          api-level: 25
-          target: default
-          arch: x86
-          profile: Galaxy Nexus
-          disable-animations: true
-          script: ./gradlew connectedCheck --stacktrace
-
-  apiTest:
-    runs-on: macOS-latest
-    steps:
-      - uses: actions/checkout@v2
-      # Install Node.js
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      # Install Newman
-      - name: Install Newman
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
-      # Make directory to upload the test results
-      - name: Make Directory for Results
-        run: mkdir -p testResults
-      # Run the POSTMAN Collection
-      - name: Run POSTMAN Collection
-        run: |
-          newman run ./postman/MusicNow-collection.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
-      # Upload the contents of Test Results directory to workspace
-      - name: Output the Run Details
+          java-version: '8'
+          distribution: 'adopt'
+      - name: Build APK
+        run: bash ./gradlew assembleDebug --stacktrace
+      - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
-          name: RunReports
-          path: testResults
+          name: apk
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+  release:
+    needs: apk
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download APK from build
+        uses: actions/download-artifact@v2
+        with:
+          name: apk
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+      - name: Upload Release APK
+        id: upload_release_asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: apk/app-debug.apk
+          asset_name: MusicNow.apk
+          asset_content_type: application/zip
